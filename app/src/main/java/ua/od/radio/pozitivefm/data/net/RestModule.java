@@ -14,10 +14,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ua.od.radio.pozitivefm.BuildConfig;
 
 
-/**
- * Created by user on 9/4/2017.
- */
-
 public class RestModule {
     private static final int TIMEOUT = 10;
     private static final int MAX_SIZE = 4 * 1024 * 1024;
@@ -45,12 +41,12 @@ public class RestModule {
                 .create(RestApi.class);
     }
 
-//    public RestApi provideRestApiAuth() {
-//        return new Retrofit.Builder()
-//                .baseUrl(BASE_URL_AUTH)
-//                .client(httpClientBuilder.build())
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//                .create(RestApi.class);
-//    }
+    public RestApi provideRestApi() {
+        return new Retrofit.Builder()
+                .baseUrl("http://pozitiv.fm/")
+                .client(httpClientBuilder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(RestApi.class);
+    }
 }
