@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">PozitiveFM</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name">PozitivFM</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="radio">Радио</string>
+    <string name="web_video">Веб-видео</string>
+    <string name="about_us">О нас</string>
 </resources>

@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    //Основные цвета: синий и бирюзовый
+    <color name="colorPrimary">#306de5</color>
+    <color name="colorPrimaryDark">#306de5</color>
+    <color name="colorAccent">#5eb8c6</color>
+    //Вспомагательные цвета : белый, серый.
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorGray">#adadad</color>
+    //Дополнительные цвета: для второстепенных элементов могут быть использованы оттенки основных и вспомагательныхх цветов
+    <color name="colorViolet">#1849aa</color>
+    <color name="colorLight">#a5dce0</color>
+    <color name="colorDark">#626262</color>
+
 </resources>
