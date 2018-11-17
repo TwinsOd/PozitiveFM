@@ -8,10 +8,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
+import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 
 /**
@@ -19,6 +24,8 @@ import ua.od.radio.pozitivefm.data.model.TrackModel;
  */
 public class RadioFragment extends Fragment {
 
+
+    private TrackAdapter adapter;
 
     public RadioFragment() {
         // Required empty public constructor
@@ -29,23 +36,31 @@ public class RadioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_radio, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.track_recycler_view);
+        final RecyclerView recyclerView = view.findViewById(R.id.track_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ArrayList<TrackModel> list = new ArrayList<>();
-        TrackModel model = new TrackModel();
-        model.setAuthor("Katy Perry");
-        model.setTitle("Hot N Cold");
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        TrackAdapter adapter = new TrackAdapter(list);
+        adapter = new TrackAdapter();
         recyclerView.setAdapter(adapter);
+        final TextView currentTrackView = view.findViewById(R.id.current_track_view);
+        App.getRepository().getTrackList(new DataCallback<List<TrackModel>>() {
+            @Override
+            public void onEmit(List<TrackModel> data) {
+                TrackModel currentTrackModel = data.get(0);
+                currentTrackView.setText(String.format("%s - %s",
+                        currentTrackModel.getAuthor(),currentTrackModel.getTitle()));
+                data.remove(0);
+                adapter.setList(data);
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                Toast.makeText(getContext(), "Error loading tracks", Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 

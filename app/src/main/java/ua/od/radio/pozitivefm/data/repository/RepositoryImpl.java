@@ -13,15 +13,14 @@ import ua.od.radio.pozitivefm.data.executor.JobExecutor;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 import ua.od.radio.pozitivefm.data.net.RestApi;
 import ua.od.radio.pozitivefm.data.net.RestModule;
+import ua.od.radio.pozitivefm.data.task.TrackTask;
 
 public class RepositoryImpl implements Repository {
     private final Handler uiHandler;
     private final ExecutorService executorService;
     private final RestApi restApi;
 
-
     public RepositoryImpl(@NonNull Context context) {
-//        this.context = context;
         restApi = new RestModule(context).provideRestApi();
         JobExecutor jobExecutor = new JobExecutor();
         executorService = jobExecutor.getThreadPoolExecutor();
@@ -30,6 +29,6 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void getTrackList(DataCallback<List<TrackModel>> callback) {
-
+        executorService.execute(new TrackTask(restApi, uiHandler, callback ));
     }
 }

@@ -7,16 +7,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder> {
     private List<TrackModel> list;
+    private Calendar calendar;
 
-    TrackAdapter(List<TrackModel> list) {
+    TrackAdapter() {
+        calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2"));
+    }
+
+    public void setList(List<TrackModel> list){
         this.list = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -30,9 +39,14 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     @Override
     public void onBindViewHolder(@NonNull TrackAdapter.TrackHolder trackHolder, int i) {
         TrackModel model = list.get(i);
-        trackHolder.timeView.setText("10:52");
+        trackHolder.timeView.setText(parseDate(model.getTs()));
         trackHolder.authorView.setText(model.getAuthor());
         trackHolder.nameView.setText(model.getTitle());
+    }
+
+    private String parseDate(long time){
+        calendar.setTimeInMillis(time*1000);
+        return String.format("%s:%s", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
     }
 
     @Override

@@ -6,6 +6,9 @@ public class TrackModel {
     private String author;
     private String title;
     private String dj;
+    private String img_url;
+    private String img_medium_url;
+    private String img_large_url;
 
     public long getTs() {
         return ts;
@@ -45,5 +48,29 @@ public class TrackModel {
 
     public void setDj(String dj) {
         this.dj = dj;
+    }
+
+    public String getImg_url() {
+        return img_url;
+    }
+
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
+    }
+
+    public String getImg_medium_url() {
+        return img_medium_url;
+    }
+
+    public void setImg_medium_url(String img_medium_url) {
+        this.img_medium_url = img_medium_url;
+    }
+
+    public String getImg_large_url() {
+        return img_large_url;
+    }
+
+    public void setImg_large_url(String img_large_url) {
+        this.img_large_url = img_large_url;
     }
 }

@@ -1,11 +1,16 @@
 package ua.od.radio.pozitivefm.data.net;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import ua.od.radio.pozitivefm.data.model.SettingsModel;
+import ua.od.radio.pozitivefm.data.model.TrackModel;
 
 /**
  * Created by Twins on 14.09.2016.
@@ -17,5 +22,5 @@ public interface RestApi {
     Call<SettingsModel> getSettings();
 
     @GET("radio_scripts/site/online.php")
-    Call<Map<Integer, List<Object>>> getTracks();
+    Call<List<JsonElement>> getTracks();
 }

@@ -25,6 +25,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/colorLight">
 
+        <View
+            android:id="@+id/center_view"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"/>
+
         <be.rijckaert.tim.animatedvector.FloatingMusicActionButton
             android:id="@+id/fab_play_view"
             android:layout_width="wrap_content"
@@ -33,16 +39,20 @@
             app:mode="playToStop"
             android:tint="@color/colorAccent"
             android:layout_gravity="center"
-            android:layout_centerInParent="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/center_view"/>
 
         <TextView
             android:id="@+id/current_track_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rihanna - Desperado"
+            tools:text="Rihanna - Desperado"
+            android:gravity="center"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/fab_play_view"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="24dp"/>
 
 
     </RelativeLayout>
