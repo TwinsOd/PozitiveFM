@@ -46,27 +46,6 @@ public class MainActivity extends AppCompatActivity {
         });
         navigation.setSelectedItemId(R.id.navigation_radio);
 //        navigation.setSelectedItemId(R.id.navigation_video);
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    SettingsModel response = new RestModule(context)
-//                            .provideFirebaseRestApi()
-//                            .getSettings()
-//                            .execute()
-//                            .body();
-//                    if (response != null){
-//                        Log.i("MainActivity", "response.getUrl:" + response.getUrl());
-//                        Log.i("MainActivity","response.getActiveRadio:" +  response.getActiveRadio());
-//                    }else
-//                        Log.i("MainActivity", "response == null" );
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    Log.i("Error:", e.getMessage());
-//                }
-//            }
-//        }).start();
     }
 
 }

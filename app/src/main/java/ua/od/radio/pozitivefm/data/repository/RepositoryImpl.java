@@ -123,8 +123,10 @@ public class RepositoryImpl implements Repository {
     @Override
     public void disablePlayer() {
         playerServiceBinder = null;
-        mediaController.unregisterCallback(callback);
-        mediaController = null;
+        if (mediaController != null) {
+            mediaController.unregisterCallback(callback);
+            mediaController = null;
+        }
         if (serviceConnection != null)
             context.unbindService(serviceConnection);
     }
