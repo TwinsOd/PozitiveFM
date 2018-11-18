@@ -1,14 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.about_us.AboutUsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="AboutUs" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_base_page"
+        android:layout_marginTop="@dimen/margin_base_page"
+        android:layout_marginEnd="@dimen/margin_base_page"
+        android:orientation="vertical"
+        android:background="@color/transperent_blue"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_about_us"
+            android:textColor="@color/colorLight" />
+
+        <TextView
+            style="@style/text_view_about_us"
+            android:drawableStart="@drawable/ic_meeting_point"
+            android:text="@string/adress" />
+
+        <TextView
+            style="@style/text_view_about_us"
+            android:drawableStart="@drawable/ic_telephone"
+            android:text="@string/tel" />
+
+        <TextView
+            style="@style/text_view_about_us"
+            android:drawableStart="@drawable/ic_smartphone"
+            android:text="@string/mob_kievstar" />
+
+        <TextView
+            style="@style/text_view_about_us"
+            android:drawableStart="@drawable/ic_clock"
+            android:text="@string/c_9_00_23_00" />
+
+        <TextView
+            style="@style/text_view_about_us"
+            android:drawableStart="@drawable/ic_email"
+            android:text="@string/mail" />
+
+        <TextView
+            style="@style/text_view_about_us"
+            android:drawableStart="@drawable/ic_web"
+            android:text="@string/pozitiv_fm" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/youtube_icon"
+                android:src="@drawable/ic_youtube"
+                style="@style/icon_soc_about_us" />
+
+            <ImageView
+                android:id="@+id/facebook_icon"
+                android:src="@drawable/ic_facebook"
+                style="@style/icon_soc_about_us" />
+
+            <ImageView
+                android:id="@+id/gg_icon"
+                android:src="@drawable/ic_goodgame"
+                style="@style/icon_soc_about_us" />
+
+            <ImageView
+                android:id="@+id/instagram_icon"
+                android:src="@drawable/ic_instagram"
+                style="@style/icon_soc_about_us" />
+
+            <ImageView
+                android:id="@+id/twitch_icon"
+                android:src="@drawable/ic_twitch"
+                style="@style/icon_soc_about_us" />
+
+            <ImageView
+                android:id="@+id/twitter_icon"
+                android:src="@drawable/ic_twitter"
+                style="@style/icon_soc_about_us" />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

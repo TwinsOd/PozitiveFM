@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorLight">
+        android:background="@drawable/gradient_radio">
 
         <View
             android:id="@+id/center_view"

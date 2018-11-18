@@ -4,4 +4,11 @@
     <string name="radio">Радио</string>
     <string name="web_video">Веб-видео</string>
     <string name="about_us">О нас</string>
+    <string name="pozitiv_fm">pozitiv.fm</string>
+    <string name="mail">pozitivfm.chief@gmail.com</string>
+    <string name="c_9_00_23_00">c 9:00 до 23:00 ежедневно</string>
+    <string name="mob_kievstar">+38(067)628 07 77</string>
+    <string name="tel">+38(048)799 08 29</string>
+    <string name="adress">г. Одесса, ул.Среднефонтанская 19а, 2 этаж</string>
+    <string name="title_about_us">Online радиостанция Pozitiv FM</string>
 </resources>
