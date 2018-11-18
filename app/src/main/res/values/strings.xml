@@ -11,4 +11,11 @@
     <string name="tel">+38(048)799 08 29</string>
     <string name="adress">г. Одесса, ул.Среднефонтанская 19а, 2 этаж</string>
     <string name="title_about_us">Online радиостанция Pozitiv FM</string>
+
+    <string name="notification_channel_name">Player controls</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>

@@ -2,6 +2,7 @@ package ua.od.radio.pozitivefm.ui.radio;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import be.rijckaert.tim.animatedvector.FloatingMusicActionButton;
 import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
@@ -33,7 +34,7 @@ public class RadioFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_radio, container, false);
         final RecyclerView recyclerView = view.findViewById(R.id.track_recycler_view);
@@ -46,7 +47,7 @@ public class RadioFragment extends Fragment {
             public void onEmit(List<TrackModel> data) {
                 TrackModel currentTrackModel = data.get(0);
                 currentTrackView.setText(String.format("%s - %s",
-                        currentTrackModel.getAuthor(),currentTrackModel.getTitle()));
+                        currentTrackModel.getAuthor(), currentTrackModel.getTitle()));
                 data.remove(0);
                 adapter.setList(data);
             }
@@ -61,7 +62,14 @@ public class RadioFragment extends Fragment {
                 Toast.makeText(getContext(), "Error loading tracks", Toast.LENGTH_SHORT).show();
             }
         });
+        FloatingMusicActionButton playerView = view.findViewById(R.id.fab_play_view);
+        App.getRepository().initPlayer(playerView);
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        App.getRepository().disablePlayer();
+        super.onDestroy();
+    }
 }

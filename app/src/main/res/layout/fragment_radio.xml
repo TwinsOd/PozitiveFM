@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             app:backgroundTint="@color/colorWhite"
             app:mode="playToStop"
-            android:tint="@color/colorAccent"
+            android:tint="@color/colorPrimaryDark"
             android:layout_gravity="center"
             android:layout_centerHorizontal="true"
             android:layout_above="@+id/center_view"/>
