@@ -26,20 +26,23 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="4dp"
             android:textColor="@color/colorLight" />
 
         <TextView
+            android:id="@+id/address_view"
             style="@style/text_view_about_us"
             android:drawableStart="@drawable/ic_meeting_point"
             android:text="@string/adress" />
 
         <TextView
+            android:id="@+id/telephone_vew"
             style="@style/text_view_about_us"
             android:drawableStart="@drawable/ic_telephone"
             android:text="@string/tel" />
 
         <TextView
+            android:id="@+id/mob_view"
             style="@style/text_view_about_us"
             android:drawableStart="@drawable/ic_smartphone"
             android:text="@string/mob_kievstar" />
@@ -50,11 +53,13 @@
             android:text="@string/c_9_00_23_00" />
 
         <TextView
+            android:id="@+id/email_view"
             style="@style/text_view_about_us"
             android:drawableStart="@drawable/ic_email"
             android:text="@string/mail" />
 
         <TextView
+            android:id="@+id/web_view"
             style="@style/text_view_about_us"
             android:drawableStart="@drawable/ic_web"
             android:text="@string/pozitiv_fm" />
@@ -75,7 +80,7 @@
                 style="@style/icon_soc_about_us" />
 
             <ImageView
-                android:id="@+id/gg_icon"
+                android:id="@+id/good_game_icon"
                 android:src="@drawable/ic_goodgame"
                 style="@style/icon_soc_about_us" />
 
