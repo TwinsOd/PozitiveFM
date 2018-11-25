@@ -44,26 +44,18 @@ public class VideoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_video, container, false);
 //        loadYoutube();
 //        loadPlayerFull(view, "https://goodgame.ru/f6ea2c47-0a96-401d-bf40-1aa2e0373bc0");
-        loadWebView(view, "https://goodgame.ru/player?152500");
+//        loadWebView(view, "https://goodgame.ru/player?152500");
+        loadWebView(view, "https://player.twitch.tv/?channel=pozitivfm");
         return view;
     }
 
     private void loadWebView(View view, String url) {
-//        String goodgameContent = "<iframe frameborder=\"0\"  width=\"100%\" height=\"100%\" src=\"https://goodgame.ru/player?152500\"></iframe>";
-//        String content =
-//                "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
-//                        "<html><head>"+
-//                        "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />"+
-//                        "</head><body>";
-//
-//        content += goodgameContent + "</body></html>";
         WebView webView = new WebView(view.getContext());
         Log.i("VideoFragment", "width = " + getWidth());
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.width = getWidth();
         params.height = getWidth() / 10 * 8;
         webView.setLayoutParams(params);
-//        webView.loadData(content,"text/html; charset=UTF-8", null);
         webView.loadUrl(url);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
