@@ -26,6 +26,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
 import ua.od.radio.pozitivefm.R;
+import ua.od.radio.pozitivefm.ui.chat.ChatFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,11 +43,18 @@ public class VideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video, container, false);
-//        loadYoutube();
+        loadYoutube();
 //        loadPlayerFull(view, "https://goodgame.ru/f6ea2c47-0a96-401d-bf40-1aa2e0373bc0");
 //        loadWebView(view, "https://goodgame.ru/player?152500");
-        loadWebView(view, "https://player.twitch.tv/?channel=pozitivfm");
+//        loadWebView(view, "https://player.twitch.tv/?channel=pozitivfm");
+        loadChat();
         return view;
+    }
+
+    private void loadChat() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(R.id.chat_content, ChatFragment.newInstance());
+        ft.commit();
     }
 
     private void loadWebView(View view, String url) {
