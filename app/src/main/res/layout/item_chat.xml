@@ -14,6 +14,7 @@
         android:src="@drawable/ic_person_face_listening_music" />
 
     <LinearLayout
+        android:id="@+id/message_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -29,15 +30,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Nick Name"
             android:maxLines="1"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/message_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

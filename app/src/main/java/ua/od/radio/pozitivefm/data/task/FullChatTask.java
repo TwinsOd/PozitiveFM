@@ -49,7 +49,7 @@ public class FullChatTask implements Runnable {
                     if (i == 1)
                         model.setNick(value.text());
                     else if (i == 2)
-                        model.setMessage(value.text());
+                        model.setMessage(value.html());
                     i++;
                 }
                 list.add(model);

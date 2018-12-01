@@ -38,7 +38,7 @@ public class ChatFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         linearLayoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new ChatAdapter();
+        adapter = new ChatAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         App.getRepository().getFullMessage(new DataCallback<List<ChatModel>>() {
             @Override
