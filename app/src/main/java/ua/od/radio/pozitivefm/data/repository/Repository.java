@@ -4,10 +4,13 @@ import java.util.List;
 
 import be.rijckaert.tim.animatedvector.FloatingMusicActionButton;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
+import ua.od.radio.pozitivefm.data.model.ChatModel;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 
 public interface Repository {
     void getTrackList(DataCallback<List<TrackModel>> callback);
+
+    void getFullMessage(DataCallback<List<ChatModel>> callback);
 
     void playRadio();
 

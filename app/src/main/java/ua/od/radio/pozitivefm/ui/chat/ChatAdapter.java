@@ -18,16 +18,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
 
     ChatAdapter() {
         list = new ArrayList<>();
-        ChatModel model = new ChatModel();
-        model.setNick("Test nick");
-        model.setMessage("Большое спасибо за ответ, с этим API я разобрался");
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        list.add(model);
-        list.add(model);
+//        ChatModel model = new ChatModel();
+//        model.setNick("Test nick");
+//        model.setMessage("Большое спасибо за ответ, с этим API я разобрался");
+//        list.add(model);
+//        list.add(model);
+//        list.add(model);
+//        list.add(model);
+//        list.add(model);
+//        list.add(model);
+//        list.add(model);
     }
 
     public void setList(List<ChatModel> list) {

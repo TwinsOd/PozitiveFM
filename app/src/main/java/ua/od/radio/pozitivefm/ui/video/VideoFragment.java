@@ -43,11 +43,11 @@ public class VideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video, container, false);
-        loadYoutube();
+//        loadYoutube();
 //        loadPlayerFull(view, "https://goodgame.ru/f6ea2c47-0a96-401d-bf40-1aa2e0373bc0");
-//        loadWebView(view, "https://goodgame.ru/player?152500");
+        loadWebView(view, "https://goodgame.ru/player?152500");
 //        loadWebView(view, "https://player.twitch.tv/?channel=pozitivfm");
-        loadChat();
+//        loadChat();
         return view;
     }
 

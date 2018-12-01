@@ -38,6 +38,8 @@ dependencies {
     //exo player
     implementation 'com.google.android.exoplayer:exoplayer:r2.4.0'
     implementation 'com.google.android.exoplayer:extension-okhttp:r2.4.0'
+    //parser
+    implementation 'org.jsoup:jsoup:1.10.2'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'

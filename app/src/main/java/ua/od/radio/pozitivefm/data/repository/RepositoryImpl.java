@@ -19,10 +19,12 @@ import java.util.concurrent.ExecutorService;
 import be.rijckaert.tim.animatedvector.FloatingMusicActionButton;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.executor.JobExecutor;
+import ua.od.radio.pozitivefm.data.model.ChatModel;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 import ua.od.radio.pozitivefm.data.net.RestApi;
 import ua.od.radio.pozitivefm.data.net.RestModule;
 import ua.od.radio.pozitivefm.data.service.PlayerService;
+import ua.od.radio.pozitivefm.data.task.FullChatTask;
 import ua.od.radio.pozitivefm.data.task.TrackTask;
 
 public class RepositoryImpl implements Repository {
@@ -48,6 +50,11 @@ public class RepositoryImpl implements Repository {
     @Override
     public void getTrackList(DataCallback<List<TrackModel>> callback) {
         executorService.execute(new TrackTask(restApi, uiHandler, callback ));
+    }
+
+    @Override
+    public void getFullMessage(DataCallback<List<ChatModel>> callback) {
+        executorService.execute(new FullChatTask(callback, uiHandler));
     }
 
     @Override

@@ -15,6 +15,7 @@ import ua.od.radio.pozitivefm.BuildConfig;
 
 
 public class RestModule {
+    public static final String BASE_POSITIV_URL = "http://pozitiv.fm/";
     private static final int TIMEOUT = 10;
     private static final int MAX_SIZE = 4 * 1024 * 1024;
     private static final String HTTP_CACHE = "http-cache";
@@ -43,7 +44,7 @@ public class RestModule {
 
     public RestApi provideRestApi() {
         return new Retrofit.Builder()
-                .baseUrl("http://pozitiv.fm/")
+                .baseUrl(BASE_POSITIV_URL)
                 .client(httpClientBuilder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
