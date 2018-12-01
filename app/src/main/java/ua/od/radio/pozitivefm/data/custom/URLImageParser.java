@@ -25,6 +25,8 @@ public class URLImageParser implements Html.ImageGetter {
 
     public Drawable getDrawable(String source) {
         Log.i("URLImageParser", "getDrawable, source " + source);
+        if (source.contains("http://pozitiv.fm/media"))
+            return null;
         URLDrawable urlDrawable = new URLDrawable();
 
         // get the actual source

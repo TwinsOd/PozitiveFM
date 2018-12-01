@@ -9,7 +9,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
@@ -53,6 +52,7 @@ import java.io.File;
 
 import okhttp3.OkHttpClient;
 import ua.od.radio.pozitivefm.R;
+import ua.od.radio.pozitivefm.data.model.TrackModel;
 import ua.od.radio.pozitivefm.ui.MainActivity;
 
 public class PlayerService extends Service {
@@ -80,7 +80,6 @@ public class PlayerService extends Service {
     private ExtractorsFactory extractorsFactory;
     private DataSource.Factory dataSourceFactory;
 
-    private final MusicRepository musicRepository = new MusicRepository();
 
     @Override
     public void onCreate() {
@@ -141,7 +140,6 @@ public class PlayerService extends Service {
 
     private MediaSessionCompat.Callback mediaSessionCallback = new MediaSessionCompat.Callback() {
 
-        private Uri currentUri;
         int currentState = PlaybackStateCompat.STATE_STOPPED;
 
         @Override
@@ -149,10 +147,13 @@ public class PlayerService extends Service {
             if (!exoPlayer.getPlayWhenReady()) {
                 startService(new Intent(getApplicationContext(), PlayerService.class));
 
-                MusicRepository.Track track = musicRepository.getCurrent();
-                updateMetadataFromTrack(track);
+                TrackModel model = new TrackModel();
+                model.setTitle("Title test");
+                model.setAuthor("Author test");
+                model.setDj("Dj test");
+                updateMetadataFromTrack(model);
 
-                prepareToPlay(track.getUri());
+                prepareToPlay();
 
                 if (!audioFocusRequested) {
                     audioFocusRequested = true;
@@ -220,40 +221,19 @@ public class PlayerService extends Service {
             stopSelf();
         }
 
-        @Override
-        public void onSkipToNext() {
-            MusicRepository.Track track = musicRepository.getNext();
-            updateMetadataFromTrack(track);
+        private void prepareToPlay() {
+            ExtractorMediaSource mediaSource = new ExtractorMediaSource(Uri.parse("http://92.60.176.13:8000/radio"),
+                    dataSourceFactory, extractorsFactory, null, null);
+            exoPlayer.prepare(mediaSource);
 
-            refreshNotificationAndForegroundStatus(currentState);
-
-            prepareToPlay(track.getUri());
         }
 
-        @Override
-        public void onSkipToPrevious() {
-            MusicRepository.Track track = musicRepository.getPrevious();
-            updateMetadataFromTrack(track);
-
-            refreshNotificationAndForegroundStatus(currentState);
-
-            prepareToPlay(track.getUri());
-        }
-
-        private void prepareToPlay(Uri uri) {
-            if (!uri.equals(currentUri)) {
-                currentUri = uri;
-                ExtractorMediaSource mediaSource = new ExtractorMediaSource(uri, dataSourceFactory, extractorsFactory, null, null);
-                exoPlayer.prepare(mediaSource);
-            }
-        }
-
-        private void updateMetadataFromTrack(MusicRepository.Track track) {
-            metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, BitmapFactory.decodeResource(getResources(), track.getBitmapResId()));
-            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, track.getTitle());
-            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, track.getArtist());
-            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, track.getArtist());
-            metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, track.getDuration());
+        private void updateMetadataFromTrack(TrackModel model) {
+//            metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, BitmapFactory.decodeResource(getResources(), track.getBitmapResId()));
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, model.getTitle());
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, model.getDj());
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, model.getAuthor());
+//            metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, );
             mediaSession.setMetadata(metadataBuilder.build());
         }
     };
