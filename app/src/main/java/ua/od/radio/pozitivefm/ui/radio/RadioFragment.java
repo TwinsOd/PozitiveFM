@@ -20,25 +20,19 @@ import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class RadioFragment extends Fragment {
-
-
     private TrackAdapter adapter;
 
     public RadioFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_radio, container, false);
         final RecyclerView recyclerView = view.findViewById(R.id.track_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         adapter = new TrackAdapter();
         recyclerView.setAdapter(adapter);
         final TextView currentTrackView = view.findViewById(R.id.current_track_view);
@@ -59,7 +53,8 @@ public class RadioFragment extends Fragment {
 
             @Override
             public void onError(Throwable throwable) {
-                Toast.makeText(getContext(), "Error loading tracks", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null)
+                    Toast.makeText(getActivity(), "Error loading tracks", Toast.LENGTH_SHORT).show();
             }
         });
         FloatingMusicActionButton playerView = view.findViewById(R.id.fab_play_view);

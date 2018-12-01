@@ -15,6 +15,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -24,6 +25,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -49,15 +51,17 @@ import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.util.Util;
 
 import java.io.File;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
+import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
+import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 import ua.od.radio.pozitivefm.ui.MainActivity;
 
 public class PlayerService extends Service {
-
-    private final int NOTIFICATION_ID = 404;
+    private final int UPDATE_TIME = 15 * 1000;
     private final String NOTIFICATION_DEFAULT_CHANNEL_ID = "default_channel";
 
     private final MediaMetadataCompat.Builder metadataBuilder = new MediaMetadataCompat.Builder();
@@ -79,6 +83,7 @@ public class PlayerService extends Service {
     private SimpleExoPlayer exoPlayer;
     private ExtractorsFactory extractorsFactory;
     private DataSource.Factory dataSourceFactory;
+    private Handler timerHandler;
 
 
     @Override
@@ -125,6 +130,38 @@ public class PlayerService extends Service {
         this.extractorsFactory = new DefaultExtractorsFactory();
     }
 
+    private void createTimer() {
+        Log.i("PlayerService", "createTimer");
+        timerHandler = new Handler();
+        timerHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (timerHandler == null)
+                    return;
+
+                timerHandler.postDelayed(this, UPDATE_TIME);
+                App.getRepository().getTrackList(new DataCallback<List<TrackModel>>() {
+                    @Override
+                    public void onEmit(List<TrackModel> data) {
+                        updateMetadata(data.get(0));
+                        refreshNotificationAndForegroundStatus(PlaybackStateCompat.STATE_PLAYING);
+                        Log.i("PlayerService", "getTrackList.author" + data.get(0).getAuthor());
+                    }
+
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+
+                    }
+                });
+            }
+        }, 10);
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         MediaButtonReceiver.handleIntent(mediaSession, intent);
@@ -144,14 +181,15 @@ public class PlayerService extends Service {
 
         @Override
         public void onPlay() {
+            createTimer();
             if (!exoPlayer.getPlayWhenReady()) {
                 startService(new Intent(getApplicationContext(), PlayerService.class));
 
                 TrackModel model = new TrackModel();
-                model.setTitle("Title test");
-                model.setAuthor("Author test");
-                model.setDj("Dj test");
-                updateMetadataFromTrack(model);
+                model.setTitle("Radio PozitivFM");
+//                model.setAuthor("Author test");
+//                model.setDj("Dj test");
+                updateMetadata(model);
 
                 prepareToPlay();
 
@@ -196,6 +234,7 @@ public class PlayerService extends Service {
 
         @Override
         public void onStop() {
+            timerHandler = null;
             if (exoPlayer.getPlayWhenReady()) {
                 exoPlayer.setPlayWhenReady(false);
                 unregisterReceiver(becomingNoisyReceiver);
@@ -228,14 +267,7 @@ public class PlayerService extends Service {
 
         }
 
-        private void updateMetadataFromTrack(TrackModel model) {
-//            metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, BitmapFactory.decodeResource(getResources(), track.getBitmapResId()));
-            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, model.getTitle());
-            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, model.getDj());
-            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, model.getAuthor());
-//            metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, );
-            mediaSession.setMetadata(metadataBuilder.build());
-        }
+
     };
 
     private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
@@ -254,6 +286,18 @@ public class PlayerService extends Service {
             }
         }
     };
+
+    private void updateMetadata(TrackModel model) {
+//            metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, BitmapFactory.decodeResource(getResources(), track.getBitmapResId()));
+        if (model.getTitle() != null)
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, model.getTitle());
+        if (model.getDj() != null)
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, model.getDj());
+        if (model.getAuthor() != null)
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, model.getAuthor());
+//            metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, );
+        mediaSession.setMetadata(metadataBuilder.build());
+    }
 
     private final BroadcastReceiver becomingNoisyReceiver = new BroadcastReceiver() {
         @Override
@@ -311,6 +355,7 @@ public class PlayerService extends Service {
     }
 
     private void refreshNotificationAndForegroundStatus(int playbackState) {
+        int NOTIFICATION_ID = 404;
         switch (playbackState) {
             case PlaybackStateCompat.STATE_PLAYING: {
                 startForeground(NOTIFICATION_ID, getNotification(playbackState));
