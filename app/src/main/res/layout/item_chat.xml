@@ -9,37 +9,36 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_gravity="top"
+        android:background="@drawable/circle_background"
+        android:padding="4dp"
         android:src="@drawable/ic_person_face_listening_music" />
 
     <LinearLayout
-        android:layout_width="64dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:background="@drawable/message_background"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/nick_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:text="Nick Name"
             android:maxLines="1"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/time_view"
-            android:layout_width="wrap_content"
+            android:id="@+id/message_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="23:58"
-            android:maxLines="1" />
+            android:layout_gravity="center_vertical" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/message_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_weight="1" />
 
 </LinearLayout>

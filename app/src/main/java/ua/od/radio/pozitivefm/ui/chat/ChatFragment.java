@@ -20,6 +20,7 @@ import ua.od.radio.pozitivefm.data.model.ChatModel;
 public class ChatFragment extends Fragment {
 
     private ChatAdapter adapter;
+    private RecyclerView recyclerView;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -33,7 +34,7 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.chat_list);
+        recyclerView = view.findViewById(R.id.chat_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         linearLayoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -48,7 +49,7 @@ public class ChatFragment extends Fragment {
 
             @Override
             public void onCompleted() {
-
+                recyclerView.scrollToPosition(0);
             }
 
             @Override

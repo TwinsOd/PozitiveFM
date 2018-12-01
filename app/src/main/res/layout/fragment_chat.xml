@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#6affffff"
     tools:context="ua.od.radio.pozitivefm.ui.chat.ChatFragment">
 
     <LinearLayout
@@ -26,15 +25,16 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"
+            android:textSize="20sp"
             android:layout_gravity="center_vertical"
-            android:text="РАДИО ЧАТ" />
+            android:text="@string/radio_chat" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/chat_list"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp" />
 
     <View
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_gravity="center_vertical"
             android:layout_height="match_parent"
-            android:hint="Напишите сообщение..."
+            android:hint="@string/write_message"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp" />
 

@@ -36,7 +36,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
     public void onBindViewHolder(@NonNull ChatAdapter.ChatHolder chatHolder, int i) {
         ChatModel model = list.get(i);
         chatHolder.nickView.setText(model.getNick());
-//        chatHolder.timeView.setText(model.getTime());
         chatHolder.messageView.setText(model.getMessage());
     }
 
@@ -46,12 +45,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
     }
 
     static class ChatHolder extends RecyclerView.ViewHolder {
-        private TextView messageView, nickView, timeView;
+        private TextView messageView, nickView;
 
         ChatHolder(final View view) {
             super(view);
             nickView = view.findViewById(R.id.nick_view);
-            timeView = view.findViewById(R.id.time_view);
             messageView = view.findViewById(R.id.message_view);
         }
     }

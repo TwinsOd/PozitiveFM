@@ -18,4 +18,6 @@
     <string name="stop">Stop</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="write_message">Напишите сообщение...</string>
+    <string name="radio_chat">РАДИО ЧАТ</string>
 </resources>

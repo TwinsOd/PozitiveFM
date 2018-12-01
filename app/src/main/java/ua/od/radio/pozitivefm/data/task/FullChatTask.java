@@ -45,7 +45,7 @@ public class FullChatTask implements Runnable {
                 Log.i("FullChatTask", "-----------------------------");
                 ChatModel model = new ChatModel();
                 for (Element value : valueElement) {
-                    Log.i("FullChatTask", "i = " + i + ", value = " + value.text());
+                    Log.i("FullChatTask", "i = " + i + ", value = " + value.html());
                     if (i == 1)
                         model.setNick(value.text());
                     else if (i == 2)
