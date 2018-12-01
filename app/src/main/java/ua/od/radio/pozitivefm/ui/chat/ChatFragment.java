@@ -56,6 +56,13 @@ public class ChatFragment extends Fragment {
 
             }
         });
+        view.findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getActivity() != null)
+                    getActivity().onBackPressed();
+            }
+        });
         return view;
     }
 }

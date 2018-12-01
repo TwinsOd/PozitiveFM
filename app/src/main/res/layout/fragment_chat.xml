@@ -6,6 +6,30 @@
     android:background="#6affffff"
     tools:context="ua.od.radio.pozitivefm.ui.chat.ChatFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimaryDark">
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="12dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/ic_backspace" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:text="РАДИО ЧАТ" />
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/chat_list"
         android:layout_weight="1"

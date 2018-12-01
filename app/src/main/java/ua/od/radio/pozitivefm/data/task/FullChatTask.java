@@ -31,9 +31,6 @@ public class FullChatTask implements Runnable {
         List<ChatModel> list = new ArrayList<>();
         try {
             body = Jsoup.connect(BASE_POSITIV_URL).post().body();
-            Log.i("TimeRunnable", "length " + body.text().length());
-            Log.i("TimeRunnable", body.text());
-
             if (body == null)
                 return;
 

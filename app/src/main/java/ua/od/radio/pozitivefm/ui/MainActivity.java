@@ -9,6 +9,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.ui.about_us.AboutUsFragment;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment fragment;
     private boolean isShowChat = false;
     private BottomNavigationView navigation;
+    private RelativeLayout topView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,18 +56,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 navigation.setVisibility(View.GONE);
+                topView.setVisibility(View.GONE);
+                isShowChat = true;
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.main_container, ChatFragment.newInstance());
                 transaction.addToBackStack("chat_fragment");
                 transaction.commit();
             }
         });
+        topView = findViewById(R.id.top_bar);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        if (isShowChat)
+        if (isShowChat) {
             navigation.setVisibility(View.VISIBLE);
+            topView.setVisibility(View.VISIBLE);
+        }
+        super.onBackPressed();
     }
 }
