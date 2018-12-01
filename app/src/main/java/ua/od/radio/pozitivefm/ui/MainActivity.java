@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isShowChat = false;
     private BottomNavigationView navigation;
     private RelativeLayout topView;
+//    private BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         topView = findViewById(R.id.top_bar);
+
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(TRACK_INTENT);
+//        receiver = new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                TrackModel model = new TrackModel();
+//                model.setAuthor(intent.getStringExtra(Constants.AUTHOR));
+//                model.setTitle(intent.getStringExtra(Constants.TITLE));
+//                model.setDj(intent.getStringExtra(Constants.DJ));
+//                model.setTs(Long.parseLong(intent.getStringExtra(Constants.TS)));
+//            }
+//        };
+//        registerReceiver(receiver, filter);
     }
+
+//    @Override
+//    protected void onDestroy() {
+//        if (receiver != null) {
+//            unregisterReceiver(receiver);
+//            receiver = null;
+//        }
+//        super.onDestroy();
+//    }
 
     @Override
     public void onBackPressed() {

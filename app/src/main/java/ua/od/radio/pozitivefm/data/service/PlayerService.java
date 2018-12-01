@@ -55,10 +55,13 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 import ua.od.radio.pozitivefm.App;
+import ua.od.radio.pozitivefm.Constants;
 import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 import ua.od.radio.pozitivefm.ui.MainActivity;
+
+import static ua.od.radio.pozitivefm.Constants.TRACK_INTENT;
 
 public class PlayerService extends Service {
     private final int UPDATE_TIME = 15 * 1000;
@@ -143,9 +146,17 @@ public class PlayerService extends Service {
                 App.getRepository().getTrackList(new DataCallback<List<TrackModel>>() {
                     @Override
                     public void onEmit(List<TrackModel> data) {
-                        updateMetadata(data.get(0));
+                        TrackModel model = data.get(0);
+                        updateMetadata(model);
                         refreshNotificationAndForegroundStatus(PlaybackStateCompat.STATE_PLAYING);
                         Log.i("PlayerService", "getTrackList.author" + data.get(0).getAuthor());
+                        Intent broadCastIntent = new Intent();
+                        broadCastIntent.setAction(TRACK_INTENT);
+                        broadCastIntent.putExtra(Constants.AUTHOR, model.getAuthor());
+                        broadCastIntent.putExtra(Constants.TITLE, model.getTitle());
+                        broadCastIntent.putExtra(Constants.TS, model.getTs());
+                        broadCastIntent.putExtra(Constants.DJ, model.getDj());
+                        sendBroadcast(broadCastIntent);
                     }
 
                     @Override

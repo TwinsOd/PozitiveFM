@@ -2,6 +2,10 @@ package ua.od.radio.pozitivefm.ui.radio;
 
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,12 +20,18 @@ import java.util.List;
 
 import be.rijckaert.tim.animatedvector.FloatingMusicActionButton;
 import ua.od.radio.pozitivefm.App;
+import ua.od.radio.pozitivefm.Constants;
 import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 
+import static ua.od.radio.pozitivefm.Constants.TRACK_INTENT;
+
 public class RadioFragment extends Fragment {
     private TrackAdapter adapter;
+    private BroadcastReceiver receiver;
+    private TrackModel currentTrackModel;
+    private TextView currentTrackView;
 
     public RadioFragment() {
         // Required empty public constructor
@@ -35,11 +45,11 @@ public class RadioFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         adapter = new TrackAdapter();
         recyclerView.setAdapter(adapter);
-        final TextView currentTrackView = view.findViewById(R.id.current_track_view);
+        currentTrackView = view.findViewById(R.id.current_track_view);
         App.getRepository().getTrackList(new DataCallback<List<TrackModel>>() {
             @Override
             public void onEmit(List<TrackModel> data) {
-                TrackModel currentTrackModel = data.get(0);
+                currentTrackModel = data.get(0);
                 currentTrackView.setText(String.format("%s - %s",
                         currentTrackModel.getAuthor(), currentTrackModel.getTitle()));
                 data.remove(0);
@@ -59,7 +69,47 @@ public class RadioFragment extends Fragment {
         });
         FloatingMusicActionButton playerView = view.findViewById(R.id.fab_play_view);
         App.getRepository().initPlayer(playerView);
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                TrackModel model = new TrackModel();
+                model.setAuthor(intent.getStringExtra(Constants.AUTHOR));
+                model.setTitle(intent.getStringExtra(Constants.TITLE));
+                model.setDj(intent.getStringExtra(Constants.DJ));
+                model.setTs(intent.getLongExtra(Constants.TS, 0));
+                updateList(model);
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(TRACK_INTENT);
+        getActivity().registerReceiver(receiver, filter);
+
+    }
+
+    private void updateList(TrackModel model) {
+        if (currentTrackModel.getTs() == model.getTs())
+            return;
+        adapter.addItem(currentTrackModel);
+        currentTrackModel = model;
+        currentTrackView.setText(String.format("%s - %s",
+                currentTrackModel.getAuthor(), currentTrackModel.getTitle()));
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (receiver != null && getActivity() != null) {
+            getActivity().unregisterReceiver(receiver);
+            receiver = null;
+        }
     }
 
     @Override

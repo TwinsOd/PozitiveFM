@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import ua.od.radio.pozitivefm.R;
@@ -25,6 +24,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
 
     public void setList(List<TrackModel> list){
         this.list = list;
+        notifyDataSetChanged();
+    }
+
+    void addItem(TrackModel currentTrackModel) {
+        list.add(0, currentTrackModel);
         notifyDataSetChanged();
     }
 
