@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -17,10 +20,14 @@ import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.model.ChatModel;
 
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment implements View.OnClickListener {
 
     private ChatAdapter adapter;
     private RecyclerView recyclerView;
+    private LinearLayout enterLayout;
+    private LinearLayout messageLayout;
+    private EditText inputMessage;
+    private ImageView sendMessageView;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -64,6 +71,27 @@ public class ChatFragment extends Fragment {
                     getActivity().onBackPressed();
             }
         });
+
+        enterLayout = view.findViewById(R.id.enter_layout);
+        view.findViewById(R.id.enter_view).setOnClickListener(this);
+        messageLayout = view.findViewById(R.id.message_layout);
+        inputMessage = view.findViewById(R.id.input_message);
+        view.findViewById(R.id.send_message_view).setOnClickListener(this);
+
+        enterLayout.setVisibility(View.VISIBLE);
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.enter_view:
+                AuthorizationFragment fragment = AuthorizationFragment.newInstance();
+                fragment.show(getChildFragmentManager(), "authorization_fragment");
+                break;
+            case R.id.send_message_view:
+
+                break;
+        }
     }
 }
