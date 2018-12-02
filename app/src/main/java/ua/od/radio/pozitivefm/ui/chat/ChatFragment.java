@@ -1,6 +1,7 @@
 package ua.od.radio.pozitivefm.ui.chat;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,11 +48,14 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new ChatAdapter(getActivity());
         recyclerView.setAdapter(adapter);
+        final ProgressDialog progressDialog = new ProgressDialog(view.getContext());
+        progressDialog.show();
         App.getRepository().getFullMessage(new DataCallback<List<ChatModel>>() {
             @Override
             public void onEmit(List<ChatModel> data) {
                 Log.i("ChatFragment", "data.size " + data.size());
                 adapter.setList(data);
+                progressDialog.cancel();
             }
 
             @Override
@@ -61,7 +65,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(Throwable throwable) {
-
+                progressDialog.cancel();
             }
         });
         view.findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
