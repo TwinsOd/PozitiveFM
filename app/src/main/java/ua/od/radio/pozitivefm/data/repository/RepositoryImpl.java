@@ -58,6 +58,11 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
+    public void authorization(String login, String password, DataCallback callback) {
+        callback.onCompleted();
+    }
+
+    @Override
     public void playRadio() {
 
     }

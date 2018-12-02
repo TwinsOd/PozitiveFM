@@ -9,8 +9,9 @@ import ua.od.radio.pozitivefm.data.model.TrackModel;
 
 public interface Repository {
     void getTrackList(DataCallback<List<TrackModel>> callback);
-
     void getFullMessage(DataCallback<List<ChatModel>> callback);
+
+    void authorization(String login, String password, DataCallback callback);
 
     void playRadio();
 

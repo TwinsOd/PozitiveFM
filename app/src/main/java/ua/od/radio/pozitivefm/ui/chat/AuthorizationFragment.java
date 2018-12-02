@@ -2,16 +2,20 @@ package ua.od.radio.pozitivefm.ui.chat;
 
 
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
+import ua.od.radio.pozitivefm.data.callback.DataCallback;
 
 
 public class AuthorizationFragment extends DialogFragment implements View.OnClickListener {
@@ -20,6 +24,8 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
     private TextView registrationType;
     private LinearLayout registrationLayout;
     private Button enterView;
+    private EditText loginView;
+    private EditText passwordView;
 
     public AuthorizationFragment() {
         // Required empty public constructor
@@ -49,6 +55,9 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
         enterView = view.findViewById(R.id.enter_view);
         enterView.setOnClickListener(this);
         updateType();
+
+        loginView = view.findViewById(R.id.login_view);
+        passwordView = view.findViewById(R.id.password_view);
         return view;
     }
 
@@ -67,7 +76,7 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
         switch (view.getId()) {
             case R.id.authorization_type:
                 isAuth = true;
@@ -79,11 +88,46 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
                 break;
             case R.id.enter_view:
                 if (isAuth) {
-
+                    toAuthorization(view);
                 } else {
                     Toast.makeText(view.getContext(), "В разработке", Toast.LENGTH_LONG).show();
                 }
                 break;
         }
+    }
+
+    private void toAuthorization(final View view) {
+        if (checkAuthValue()) {
+            final ProgressDialog progressDialog = new ProgressDialog(view.getContext());
+            progressDialog.show();
+            App.getRepository().authorization(
+                    loginView.getText().toString(),
+                    passwordView.getText().toString(),
+                    new DataCallback() {
+                        @Override
+                        public void onEmit(Object data) {
+
+                        }
+
+                        @Override
+                        public void onCompleted() {
+                            progressDialog.cancel();
+                            dismiss();
+                        }
+
+                        @Override
+                        public void onError(Throwable throwable) {
+                            progressDialog.cancel();
+                            Toast.makeText(view.getContext(), "Неверные даные.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+        } else
+            Toast.makeText(view.getContext(), "Заполните даные.", Toast.LENGTH_LONG).show();
+    }
+
+    private boolean checkAuthValue() {
+        String login = loginView.getText().toString();
+        String password = passwordView.getText().toString();
+        return login.length() > 2 && password.length() > 3;
     }
 }
