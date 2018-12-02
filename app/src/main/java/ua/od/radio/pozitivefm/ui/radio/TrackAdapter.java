@@ -22,7 +22,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
         calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2"));
     }
 
-    public void setList(List<TrackModel> list){
+    public void setList(List<TrackModel> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -48,9 +48,13 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
         trackHolder.nameView.setText(model.getTitle());
     }
 
-    private String parseDate(long time){
-        calendar.setTimeInMillis(time*1000);
-        return String.format("%s:%s", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+    private String parseDate(long time) {
+        calendar.setTimeInMillis(time * 1000);
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+        String hoursStr = hours > 9 ? String.valueOf(hours) : String.format("0%s", hours);
+        int minute = calendar.get(Calendar.MINUTE);
+        String minuteStr = minute > 9 ? String.valueOf(minute) : String.format("0%s", minute);
+        return String.format("%s:%s", hoursStr, minuteStr);
     }
 
     @Override

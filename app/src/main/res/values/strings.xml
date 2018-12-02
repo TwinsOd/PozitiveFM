@@ -20,4 +20,5 @@
     <string name="next">Next</string>
     <string name="write_message">Напишите сообщение...</string>
     <string name="radio_chat">РАДИО ЧАТ</string>
+    <string name="enter">Войти</string>
 </resources>
