@@ -23,6 +23,7 @@
     <string name="enter">Войти</string>
     <string name="authorization">Авторизация</string>
     <string name="registration">Регистрация</string>
+    <string name="to_registration">Зарегистрироваться</string>
     <string name="login">Логин(nickname)</string>
     <string name="password">Пароль</string>
 </resources>

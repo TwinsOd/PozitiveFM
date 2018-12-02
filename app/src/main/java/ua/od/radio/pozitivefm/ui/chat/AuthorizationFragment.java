@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ua.od.radio.pozitivefm.R;
 
@@ -16,6 +18,8 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
     private boolean isAuth = true;
     private TextView authorizationType;
     private TextView registrationType;
+    private LinearLayout registrationLayout;
+    private Button enterView;
 
     public AuthorizationFragment() {
         // Required empty public constructor
@@ -41,6 +45,9 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
         authorizationType.setOnClickListener(this);
         registrationType = view.findViewById(R.id.registration_type);
         registrationType.setOnClickListener(this);
+        registrationLayout = view.findViewById(R.id.registration_layout);
+        enterView = view.findViewById(R.id.enter_view);
+        enterView.setOnClickListener(this);
         updateType();
         return view;
     }
@@ -49,9 +56,13 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
         if (isAuth) {
             authorizationType.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
             registrationType.setTextColor(getResources().getColor(R.color.colorDark));
+            registrationLayout.setVisibility(View.GONE);
+            enterView.setText(getString(R.string.enter));
         } else {
             authorizationType.setTextColor(getResources().getColor(R.color.colorDark));
             registrationType.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            registrationLayout.setVisibility(View.VISIBLE);
+            enterView.setText(getString(R.string.to_registration));
         }
     }
 
@@ -65,6 +76,13 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
             case R.id.registration_type:
                 isAuth = false;
                 updateType();
+                break;
+            case R.id.enter_view:
+                if (isAuth) {
+
+                } else {
+                    Toast.makeText(view.getContext(), "В разработке", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
     }

@@ -3,19 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="32dp"
     tools:context="ua.od.radio.pozitivefm.ui.chat.AuthorizationFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/authorization_type"
-            android:text="@string/authorization"
-            style="@style/type_enter" />
+            style="@style/type_enter"
+            android:text="@string/authorization" />
 
         <TextView
             android:id="@+id/registration_type"
@@ -23,18 +21,48 @@
             android:text="@string/registration" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/gradient_radio" />
+
     <EditText
         android:id="@+id/login_view"
+        style="@style/auth_input"
+        android:layout_marginTop="8dp"
+        android:hint="@string/login" />
+
+    <LinearLayout
+        android:id="@+id/registration_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawablePadding="8dp"
-        android:hint="@string/login" />
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/email_view"
+            style="@style/auth_input"
+            android:hint="Введите ваш e-mail"
+            android:inputType="textPassword" />
+
+        <EditText
+            style="@style/auth_input"
+            android:hint="Не выбрано"
+            android:inputType="textPassword" />
+
+        <EditText
+            style="@style/auth_input"
+            android:hint="дд.мм.гггг"
+            android:inputType="textPassword" />
+
+        <EditText
+            style="@style/auth_input"
+            android:hint="Не выбрано"
+            android:inputType="textPassword" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/password_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="8dp"
+        style="@style/auth_input"
         android:hint="@string/password"
         android:inputType="textPassword" />
 
@@ -45,20 +73,22 @@
         android:orientation="horizontal">
 
         <View
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/enter_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
             android:background="@drawable/enter_button_blue"
             android:text="@string/enter"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:textStyle="bold" />
     </LinearLayout>
 
