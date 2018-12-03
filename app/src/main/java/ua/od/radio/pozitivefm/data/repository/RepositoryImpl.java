@@ -24,6 +24,7 @@ import ua.od.radio.pozitivefm.data.model.TrackModel;
 import ua.od.radio.pozitivefm.data.net.RestApi;
 import ua.od.radio.pozitivefm.data.net.RestModule;
 import ua.od.radio.pozitivefm.data.service.PlayerService;
+import ua.od.radio.pozitivefm.data.task.AuthorizationTask;
 import ua.od.radio.pozitivefm.data.task.FullChatTask;
 import ua.od.radio.pozitivefm.data.task.TrackTask;
 
@@ -59,7 +60,7 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void authorization(String login, String password, DataCallback callback) {
-        callback.onCompleted();
+        executorService.execute(new AuthorizationTask(restApi, uiHandler, callback, login, password));
     }
 
     @Override

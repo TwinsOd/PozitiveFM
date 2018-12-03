@@ -30,6 +30,11 @@ public class FullChatTask implements Runnable {
         final Element body;
         List<ChatModel> list = new ArrayList<>();
         try {
+//            Connection connection = Jsoup.connect(BASE_POSITIV_URL);
+//            if (true){
+//                connection.cookie("joomla_user_state", "logged_in");
+//            }
+//            body = connection.post().body();
             body = Jsoup.connect(BASE_POSITIV_URL).post().body();
             if (body == null)
                 return;

@@ -3,6 +3,7 @@ package ua.od.radio.pozitivefm.ui.chat;
 
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,7 +89,7 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
                 break;
             case R.id.enter_view:
                 if (isAuth) {
-                    toAuthorization(view);
+                    toAuthorization(view.getContext());
                 } else {
                     Toast.makeText(view.getContext(), "В разработке", Toast.LENGTH_LONG).show();
                 }
@@ -96,9 +97,9 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
         }
     }
 
-    private void toAuthorization(final View view) {
+    private void toAuthorization(final Context context) {
         if (checkAuthValue()) {
-            final ProgressDialog progressDialog = new ProgressDialog(view.getContext());
+            final ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.show();
             App.getRepository().authorization(
                     loginView.getText().toString(),
@@ -112,17 +113,19 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
                         @Override
                         public void onCompleted() {
                             progressDialog.cancel();
+                            Toast.makeText(context, "Авторизация прошла успешно", Toast.LENGTH_LONG).show();
                             dismiss();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.cancel();
-                            Toast.makeText(view.getContext(), "Неверные даные.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Неверные даные.", Toast.LENGTH_LONG).show();
+                            dismiss();
                         }
                     });
         } else
-            Toast.makeText(view.getContext(), "Заполните даные.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Заполните даные.", Toast.LENGTH_LONG).show();
     }
 
     private boolean checkAuthValue() {

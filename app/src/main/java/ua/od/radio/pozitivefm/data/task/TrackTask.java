@@ -5,14 +5,12 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
@@ -31,7 +29,7 @@ public class TrackTask implements Runnable {
 
     @Override
     public void run() {
-        ArrayList<TrackModel> list = null;
+        ArrayList<TrackModel> list;
         try {
             List<JsonElement> response = restApi.getTracks().execute().body();
             if (response != null) {
