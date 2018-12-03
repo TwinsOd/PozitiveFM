@@ -2,6 +2,7 @@ package ua.od.radio.pozitivefm.ui.chat;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import java.util.List;
 import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
+import ua.od.radio.pozitivefm.data.callback.ResponseCallback;
 import ua.od.radio.pozitivefm.data.model.ChatModel;
 
 
@@ -30,6 +32,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     private LinearLayout messageLayout;
     private EditText inputMessage;
     private ImageView sendMessageView;
+    private boolean isAuth = false;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -83,20 +86,69 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         inputMessage = view.findViewById(R.id.input_message);
         view.findViewById(R.id.send_message_view).setOnClickListener(this);
 
-        enterLayout.setVisibility(View.VISIBLE);
+        updateBottomView();
         return view;
+    }
+
+    private void updateBottomView() {
+        if (isAuth) {
+            messageLayout.setVisibility(View.VISIBLE);
+            enterLayout.setVisibility(View.GONE);
+        } else {
+            enterLayout.setVisibility(View.VISIBLE);
+            messageLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.enter_view:
-                AuthorizationFragment fragment = AuthorizationFragment.newInstance();
-                fragment.show(getChildFragmentManager(), "authorization_fragment");
+                runAuthDialog();
                 break;
             case R.id.send_message_view:
-                Toast.makeText(view.getContext(), "Sending...", Toast.LENGTH_SHORT).show();
+                sendMessage(view.getContext());
+
                 break;
         }
     }
+
+    private void sendMessage(final Context context) {
+        Toast.makeText(context, "Sending...", Toast.LENGTH_SHORT).show();
+        if (inputMessage.toString().length() > 1) {
+            App.getRepository().sendMessage(inputMessage.toString(), new ResponseCallback() {
+
+                @Override
+                public void isSuccessful() {
+
+                }
+
+                @Override
+                public void isFailed() {
+
+                }
+            });
+
+        } else
+            Toast.makeText(context, "Напишите сообщение", Toast.LENGTH_SHORT).show();
+    }
+
+    private void runAuthDialog() {
+        AuthorizationFragment fragment = AuthorizationFragment.newInstance();
+        fragment.setCallback(new ResponseCallback() {
+            @Override
+            public void isSuccessful() {
+                isAuth = true;
+                updateBottomView();
+            }
+
+            @Override
+            public void isFailed() {
+
+            }
+        });
+        fragment.show(getChildFragmentManager(), "authorization_fragment");
+    }
+
+
 }

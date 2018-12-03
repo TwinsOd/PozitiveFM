@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 
 import be.rijckaert.tim.animatedvector.FloatingMusicActionButton;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
+import ua.od.radio.pozitivefm.data.callback.ResponseCallback;
 import ua.od.radio.pozitivefm.data.executor.JobExecutor;
 import ua.od.radio.pozitivefm.data.model.ChatModel;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
@@ -64,17 +65,7 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public void playRadio() {
-
-    }
-
-    @Override
-    public void stopRadio() {
-
-    }
-
-    @Override
-    public void pauseRadio() {
+    public void sendMessage(String message, ResponseCallback callback) {
 
     }
 

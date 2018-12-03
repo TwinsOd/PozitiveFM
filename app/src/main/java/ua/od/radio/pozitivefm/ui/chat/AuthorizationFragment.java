@@ -17,6 +17,7 @@ import android.widget.Toast;
 import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
+import ua.od.radio.pozitivefm.data.callback.ResponseCallback;
 
 
 public class AuthorizationFragment extends DialogFragment implements View.OnClickListener {
@@ -27,6 +28,7 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
     private Button enterView;
     private EditText loginView;
     private EditText passwordView;
+    private ResponseCallback callback;
 
     public AuthorizationFragment() {
         // Required empty public constructor
@@ -114,6 +116,7 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
                         public void onCompleted() {
                             progressDialog.cancel();
                             Toast.makeText(context, "Авторизация прошла успешно", Toast.LENGTH_LONG).show();
+                            callback.isSuccessful();
                             dismiss();
                         }
 
@@ -121,6 +124,7 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
                         public void onError(Throwable throwable) {
                             progressDialog.cancel();
                             Toast.makeText(context, "Неверные даные.", Toast.LENGTH_LONG).show();
+                            callback.isFailed();
                             dismiss();
                         }
                     });
@@ -132,5 +136,9 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
         String login = loginView.getText().toString();
         String password = passwordView.getText().toString();
         return login.length() > 2 && password.length() > 3;
+    }
+
+    public void setCallback(ResponseCallback callback) {
+        this.callback = callback;
     }
 }
