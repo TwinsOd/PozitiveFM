@@ -38,4 +38,14 @@ public interface RestApi {
     Call<Integer> authorization(
             @Query("login") String username,
             @Query("password") String password);
+
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @GET("index.php?option=com_smartshoutbox&task=addshout")
+    Call<Integer> sendMessage(
+//            @Query("shoutcategory") String shoutcategory,//0
+            @Query("name") String name,
+            @Query("message") String message
+//            @Query("files") String files,
+//            @Query("sid") String sid//0
+    );
 }
