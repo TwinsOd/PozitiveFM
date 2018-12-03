@@ -9,6 +9,8 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -25,14 +27,21 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
+import java.util.List;
+
+import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
+import ua.od.radio.pozitivefm.data.callback.DataCallback;
+import ua.od.radio.pozitivefm.data.model.ChatModel;
+import ua.od.radio.pozitivefm.ui.chat.ChatAdapter;
 import ua.od.radio.pozitivefm.ui.chat.ChatFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class VideoFragment extends Fragment {
-
+    private ChatAdapter adapter;
+    private RecyclerView recyclerView;
 
     public VideoFragment() {
         // Required empty public constructor
@@ -48,6 +57,35 @@ public class VideoFragment extends Fragment {
         loadWebView(view, "https://goodgame.ru/player?152500");
 //        loadWebView(view, "https://player.twitch.tv/?channel=pozitivfm");
 //        loadChat();
+
+
+        recyclerView = view.findViewById(R.id.chat_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
+//        linearLayoutManager.setReverseLayout(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        adapter = new ChatAdapter(getActivity());
+        recyclerView.setAdapter(adapter);
+        final ProgressDialog progressDialog = new ProgressDialog(view.getContext());
+        progressDialog.show();
+        App.getRepository().getFullMessage(new DataCallback<List<ChatModel>>() {
+            @Override
+            public void onEmit(List<ChatModel> data) {
+                Log.i("ChatFragment", "data.size " + data.size());
+                adapter.setList(data);
+                progressDialog.cancel();
+            }
+
+            @Override
+            public void onCompleted() {
+                recyclerView.scrollToPosition(0);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                progressDialog.cancel();
+            }
+        });
+
         return view;
     }
 

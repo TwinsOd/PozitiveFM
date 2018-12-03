@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -94,7 +95,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
                 fragment.show(getChildFragmentManager(), "authorization_fragment");
                 break;
             case R.id.send_message_view:
-
+                Toast.makeText(view.getContext(), "Sending...", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
