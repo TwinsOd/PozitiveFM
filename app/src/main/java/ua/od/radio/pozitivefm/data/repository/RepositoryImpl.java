@@ -21,12 +21,16 @@ import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.callback.ResponseCallback;
 import ua.od.radio.pozitivefm.data.executor.JobExecutor;
 import ua.od.radio.pozitivefm.data.model.ChatModel;
+import ua.od.radio.pozitivefm.data.model.RegistrationModel;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 import ua.od.radio.pozitivefm.data.net.RestApi;
 import ua.od.radio.pozitivefm.data.net.RestModule;
 import ua.od.radio.pozitivefm.data.service.PlayerService;
+import ua.od.radio.pozitivefm.data.shared_preferences.SharedPreferencesManager;
 import ua.od.radio.pozitivefm.data.task.AuthorizationTask;
 import ua.od.radio.pozitivefm.data.task.FullChatTask;
+import ua.od.radio.pozitivefm.data.task.RegistrationTask;
+import ua.od.radio.pozitivefm.data.task.SendMessageTask;
 import ua.od.radio.pozitivefm.data.task.TrackTask;
 
 public class RepositoryImpl implements Repository {
@@ -65,8 +69,14 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public void sendMessage(String message, ResponseCallback callback) {
+    public void registration(RegistrationModel registrationModel, DataCallback callback) {
+        executorService.execute(new RegistrationTask(restApi, uiHandler, callback, registrationModel));
+    }
 
+    @Override
+    public void sendMessage(String message, ResponseCallback callback) {
+        SharedPreferencesManager preferencesManager = new SharedPreferencesManager(context);
+        executorService.execute(new SendMessageTask(restApi, uiHandler, callback, preferencesManager.getLogin(), message));
     }
 
     @Override

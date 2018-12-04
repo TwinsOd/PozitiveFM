@@ -22,6 +22,7 @@ import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.callback.ResponseCallback;
 import ua.od.radio.pozitivefm.data.model.ChatModel;
+import ua.od.radio.pozitivefm.data.shared_preferences.SharedPreferencesManager;
 
 
 public class ChatFragment extends Fragment implements View.OnClickListener {
@@ -86,6 +87,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         inputMessage = view.findViewById(R.id.input_message);
         view.findViewById(R.id.send_message_view).setOnClickListener(this);
 
+        SharedPreferencesManager preferencesManager = new SharedPreferencesManager(view.getContext());
+        isAuth = preferencesManager.isAuthorization();
         updateBottomView();
         return view;
     }
@@ -140,6 +143,10 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             public void isSuccessful() {
                 isAuth = true;
                 updateBottomView();
+                if (getActivity() != null) {
+                    SharedPreferencesManager preferencesManager = new SharedPreferencesManager(getActivity());
+                    preferencesManager.setAuthorization(true);
+                }
             }
 
             @Override
