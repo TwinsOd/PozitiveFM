@@ -1,6 +1,7 @@
 package ua.od.radio.pozitivefm.ui.chat;
 
 
+import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,6 +14,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
@@ -36,8 +39,7 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
     }
 
     public static AuthorizationFragment newInstance() {
-        AuthorizationFragment fragment = new AuthorizationFragment();
-        return fragment;
+        return new AuthorizationFragment();
     }
 
     @Override
@@ -51,17 +53,23 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_authorization, container, false);
+
+        //top bar
         authorizationType = view.findViewById(R.id.authorization_type);
         authorizationType.setOnClickListener(this);
         registrationType = view.findViewById(R.id.registration_type);
         registrationType.setOnClickListener(this);
         registrationLayout = view.findViewById(R.id.registration_layout);
+        //ok button
         enterView = view.findViewById(R.id.enter_view);
         enterView.setOnClickListener(this);
         updateType();
-
+        //views
         loginView = view.findViewById(R.id.login_view);
         passwordView = view.findViewById(R.id.password_view);
+        TextView textView = view.findViewById(R.id.date_view);
+        textView.setOnClickListener(this);
+
         return view;
     }
 
@@ -97,7 +105,27 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
                     Toast.makeText(view.getContext(), "В разработке", Toast.LENGTH_LONG).show();
                 }
                 break;
+            case R.id.date_view:
+                createDatePicker(view.getContext());
+                break;
         }
+    }
+
+    private void createDatePicker(Context context) {
+        final Calendar calendarMax = Calendar.getInstance();
+        calendarMax.add(Calendar.DAY_OF_MONTH, 7);
+
+        final Calendar calendarToday = Calendar.getInstance();
+        int year = calendarToday.get(Calendar.YEAR);
+        int month = calendarToday.get(Calendar.MONTH);
+        calendarToday.add(Calendar.DAY_OF_MONTH, 1);
+        int day = calendarToday.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context, null,
+                year, month, day);
+//        datePickerDialog.getDatePicker().setMinDate(calendarToday.getTimeInMillis());
+//        datePickerDialog.getDatePicker().setMaxDate(calendarMax.getTimeInMillis());
+        datePickerDialog.show();
     }
 
     private void toAuthorization(final Context context) {

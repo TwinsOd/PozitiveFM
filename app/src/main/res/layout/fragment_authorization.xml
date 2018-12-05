@@ -42,22 +42,33 @@
             android:id="@+id/email_view"
             style="@style/auth_input"
             android:hint="Введите ваш e-mail"
-            android:inputType="textPassword" />
+            android:inputType="textEmailAddress" />
 
-        <EditText
+        <Spinner
+            android:id="@+id/gender_spinner"
             style="@style/auth_input"
-            android:hint="Не выбрано"
-            android:inputType="textPassword" />
 
-        <EditText
-            style="@style/auth_input"
-            android:hint="дд.мм.гггг"
-            android:inputType="textPassword" />
+            android:entries="@array/gender_list" />
 
-        <EditText
+        <TextView
+            android:id="@+id/date_view"
             style="@style/auth_input"
-            android:hint="Не выбрано"
-            android:inputType="textPassword" />
+            android:textColor="@color/colorGray"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingStart="4dp"
+            android:text="дд.мм.гггг" />
+
+        <!--<EditText-->
+        <!--style="@style/auth_input"-->
+        <!--android:hint="Не выбрано"-->
+        <!--android:inputType="textPassword" />-->
+
+        <Spinner
+            android:id="@+id/state_spinner"
+            style="@style/auth_input"
+
+            android:entries="@array/state_list" />
     </LinearLayout>
 
     <EditText

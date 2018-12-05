@@ -26,4 +26,22 @@
     <string name="to_registration">Зарегистрироваться</string>
     <string name="login">Логин(nickname)</string>
     <string name="password">Пароль</string>
+
+
+    <string-array name="state_list">
+        <item>Не выбрано</item>
+        <item>Не женат</item>
+        <item>Встречаюсь</item>
+        <item>Помовлен</item>
+        <item>Женат</item>
+        <item>В гражданском браке</item>
+        <item>Влюблён</item>
+        <item>В активном поиске</item>
+    </string-array>
+
+    <string-array name="gender_list">
+        <item>Не выбрано</item>
+        <item>Мужской</item>
+        <item>Женский</item>
+    </string-array>
 </resources>
