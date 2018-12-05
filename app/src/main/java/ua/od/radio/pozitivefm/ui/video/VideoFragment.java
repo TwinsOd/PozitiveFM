@@ -71,7 +71,7 @@ public class VideoFragment extends Fragment {
             @Override
             public void onEmit(List<ChatModel> data) {
                 Log.i("ChatFragment", "data.size " + data.size());
-                adapter.setList(data);
+                adapter.setList(data.subList(0, 9));
                 progressDialog.cancel();
             }
 

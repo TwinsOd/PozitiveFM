@@ -18,6 +18,7 @@ import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.callback.ResponseCallback;
+import ua.od.radio.pozitivefm.data.shared_preferences.SharedPreferencesManager;
 
 
 public class AuthorizationFragment extends DialogFragment implements View.OnClickListener {
@@ -116,6 +117,9 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
                         public void onCompleted() {
                             progressDialog.cancel();
                             Toast.makeText(context, "Авторизация прошла успешно", Toast.LENGTH_LONG).show();
+                            SharedPreferencesManager preferencesManager = new SharedPreferencesManager(context);
+                            preferencesManager.saveLogin(loginView.getText().toString());
+                            preferencesManager.savePassword(passwordView.getText().toString());
                             callback.isSuccessful();
                             dismiss();
                         }
