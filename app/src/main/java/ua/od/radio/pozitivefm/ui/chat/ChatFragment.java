@@ -79,6 +79,21 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.enter_view:
+                runAuthDialog(view.getContext());
+                break;
+            case R.id.send_message_view:
+                sendMessage(view.getContext());
+                break;
+            case R.id.log_out_view:
+                createDialog(view.getContext());
+                break;
+        }
+    }
+
     private void loadData(View view) {
         final ProgressDialog progressDialog = new ProgressDialog(view.getContext());
         progressDialog.show();
@@ -118,21 +133,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             messageLayout.setVisibility(View.GONE);
             logOutView.setVisibility(View.GONE);
             enterLayout.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.enter_view:
-                runAuthDialog(view.getContext());
-                break;
-            case R.id.send_message_view:
-                sendMessage(view.getContext());
-                break;
-            case R.id.log_out_view:
-                createDialog(view.getContext());
-                break;
         }
     }
 
@@ -203,11 +203,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void isFailed() {
-
+                Toast.makeText(context, "Произошла ошибка!", Toast.LENGTH_SHORT).show();
             }
         });
         fragment.show(getChildFragmentManager(), "authorization_fragment");
     }
-
-
 }
