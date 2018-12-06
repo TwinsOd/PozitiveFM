@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,9 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
     private EditText loginView;
     private EditText passwordView;
     private ResponseCallback callback;
+    private EditText emailView;
+    private Spinner genderSpinner;
+    private Spinner stateSpinner;
 
     public AuthorizationFragment() {
         // Required empty public constructor
@@ -75,9 +79,11 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
         //views
         loginView = view.findViewById(R.id.login_view);
         passwordView = view.findViewById(R.id.password_view);
-        TextView textView = view.findViewById(R.id.date_view);
-        textView.setOnClickListener(this);
-
+        emailView = view.findViewById(R.id.email_view);
+        TextView dateView = view.findViewById(R.id.date_view);
+        dateView.setOnClickListener(this);
+        genderSpinner = view.findViewById(R.id.gender_spinner);
+        stateSpinner = view.findViewById(R.id.state_spinner);
         return view;
     }
 
