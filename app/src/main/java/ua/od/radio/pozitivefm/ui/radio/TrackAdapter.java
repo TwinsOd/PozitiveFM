@@ -62,6 +62,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
         return list != null ? list.size() : 0;
     }
 
+    @Override
+    public long getItemId(int position) {
+        return list.get(position).getTs();
+    }
+
     static class TrackHolder extends RecyclerView.ViewHolder {
         private TextView timeView, authorView, nameView;
 

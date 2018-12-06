@@ -41,11 +41,42 @@ public class RadioFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_radio, container, false);
+        //init track list
         final RecyclerView recyclerView = view.findViewById(R.id.track_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         adapter = new TrackAdapter();
         recyclerView.setAdapter(adapter);
         currentTrackView = view.findViewById(R.id.current_track_view);
+        loadTrack();
+
+        FloatingMusicActionButton playerView = view.findViewById(R.id.fab_play_view);
+        App.getRepository().initPlayer(playerView);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                TrackModel model = new TrackModel();
+                model.setAuthor(intent.getStringExtra(Constants.AUTHOR));
+                model.setTitle(intent.getStringExtra(Constants.TITLE));
+                model.setDj(intent.getStringExtra(Constants.DJ));
+                model.setTs(intent.getLongExtra(Constants.TS, 0));
+                addLastItemToList(model);
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(TRACK_INTENT);
+        getActivity().registerReceiver(receiver, filter);
+
+    }
+
+    private void loadTrack() {
         App.getRepository().getTrackList(new DataCallback<List<TrackModel>>() {
             @Override
             public void onEmit(List<TrackModel> data) {
@@ -67,34 +98,9 @@ public class RadioFragment extends Fragment {
                     Toast.makeText(getActivity(), "Error loading tracks", Toast.LENGTH_SHORT).show();
             }
         });
-        FloatingMusicActionButton playerView = view.findViewById(R.id.fab_play_view);
-        App.getRepository().initPlayer(playerView);
-
-        return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                TrackModel model = new TrackModel();
-                model.setAuthor(intent.getStringExtra(Constants.AUTHOR));
-                model.setTitle(intent.getStringExtra(Constants.TITLE));
-                model.setDj(intent.getStringExtra(Constants.DJ));
-                model.setTs(intent.getLongExtra(Constants.TS, 0));
-                updateList(model);
-            }
-        };
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(TRACK_INTENT);
-        getActivity().registerReceiver(receiver, filter);
-
-    }
-
-    private void updateList(TrackModel model) {
+    private void addLastItemToList(TrackModel model) {
         if (currentTrackModel.getTs() == model.getTs())
             return;
         adapter.addItem(currentTrackModel);

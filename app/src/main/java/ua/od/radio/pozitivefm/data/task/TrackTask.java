@@ -36,8 +36,15 @@ public class TrackTask implements Runnable {
                 Type listType = new TypeToken<ArrayList<TrackModel>>() {
                 }.getType();
                 list = (new Gson()).fromJson(response.get(1), listType);
-                if (list != null)
-                    uiHandler.post(new CallbackToUI(list));
+                if (list != null) {
+                    List<TrackModel> newList = new ArrayList<>();
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getAuthor() != null && list.get(i).getAuthor().length() > 0
+                                && list.get(i).getTitle() != null && list.get(i).getTitle().length() > 0)
+                            newList.add(list.get(i));
+                    }
+                    uiHandler.post(new CallbackToUI(newList));
+                }
             } else
                 Log.i("TrackTask", "response is null");
         } catch (IOException e) {
