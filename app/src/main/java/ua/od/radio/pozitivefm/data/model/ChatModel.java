@@ -7,6 +7,14 @@ public class ChatModel {
     private String message;
     private List<String> smiles;
 
+    public ChatModel() {
+    }
+
+    public ChatModel(String login, String message) {
+        nick = login;
+        this.message = message;
+    }
+
     public String getNick() {
         return nick;
     }

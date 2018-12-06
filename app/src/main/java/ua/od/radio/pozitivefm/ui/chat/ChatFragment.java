@@ -39,6 +39,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     private ImageView sendMessageView;
     private boolean isAuth = false;
     private TextView logOutView;
+    private ProgressDialog progressDialog;
+    private SharedPreferencesManager preferencesManager;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -60,7 +62,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new ChatAdapter(getActivity());
         recyclerView.setAdapter(adapter);
-        loadData(view);
+        progressDialog = new ProgressDialog(view.getContext());
+        progressDialog.show();
+        loadData();
 
         //log out
         logOutView = view.findViewById(R.id.log_out_view);
@@ -72,9 +76,17 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         messageLayout = view.findViewById(R.id.message_layout);
         inputMessage = view.findViewById(R.id.input_message);
         view.findViewById(R.id.send_message_view).setOnClickListener(this);
-        SharedPreferencesManager preferencesManager = new SharedPreferencesManager(view.getContext());
+        preferencesManager = new SharedPreferencesManager(view.getContext());
         isAuth = preferencesManager.isAuthorization();
         updateBottomView();
+
+        view.findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getActivity() != null)
+                    getActivity().onBackPressed();
+            }
+        });
 
         return view;
     }
@@ -94,15 +106,16 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void loadData(View view) {
-        final ProgressDialog progressDialog = new ProgressDialog(view.getContext());
-        progressDialog.show();
+    private void loadData() {
         App.getRepository().getFullMessage(new DataCallback<List<ChatModel>>() {
             @Override
             public void onEmit(List<ChatModel> data) {
                 Log.i("ChatFragment", "data.size " + data.size());
                 adapter.setList(data);
-                progressDialog.cancel();
+                if (progressDialog != null) {
+                    progressDialog.cancel();
+                    progressDialog = null;
+                }
             }
 
             @Override
@@ -113,13 +126,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(Throwable throwable) {
                 progressDialog.cancel();
-            }
-        });
-        view.findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getActivity() != null)
-                    getActivity().onBackPressed();
             }
         });
     }
@@ -137,7 +143,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     }
 
     private void createDialog(Context context) {
-        final SharedPreferencesManager manager = new SharedPreferencesManager(context);
         if (!isAuth) {
             return;
         }
@@ -147,12 +152,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         } else {
             builder = new AlertDialog.Builder(context);
         }
-        String name = manager.getLogin();
+        String name = preferencesManager.getLogin();
         builder.setTitle("Выход из аккаунта")
                 .setMessage(name + ", Вы уверены что хотите выйти?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        logOut(manager);
+                        logOut();
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -164,25 +169,27 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
                 .show();
     }
 
-    private void logOut(SharedPreferencesManager manager) {
+    private void logOut() {
         isAuth = false;
-        manager.setAuthorization(false);
+        preferencesManager.setAuthorization(false);
         updateBottomView();
     }
 
     private void sendMessage(final Context context) {
-        Toast.makeText(context, "Sending...", Toast.LENGTH_SHORT).show();
-        if (inputMessage.toString().length() > 1) {
-            App.getRepository().sendMessage(inputMessage.toString(), new ResponseCallback() {
+        if (inputMessage.getText().toString().length() > 1) {
+            App.getRepository().sendMessage(inputMessage.getText().toString(), new ResponseCallback() {
 
                 @Override
                 public void isSuccessful() {
-
+                    loadData();
+//                    Toast.makeText(context, "Сообщение успешно отправлено :)", Toast.LENGTH_SHORT).show();
+                    inputMessage.setText("");
+                    adapter.addItem(new ChatModel(preferencesManager.getLogin(), inputMessage.getText().toString()));
                 }
 
                 @Override
                 public void isFailed() {
-
+                    Toast.makeText(context, "Что то пошло не так...", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -197,7 +204,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             public void isSuccessful() {
                 isAuth = true;
                 updateBottomView();
-                SharedPreferencesManager preferencesManager = new SharedPreferencesManager(context);
                 preferencesManager.setAuthorization(true);
             }
 

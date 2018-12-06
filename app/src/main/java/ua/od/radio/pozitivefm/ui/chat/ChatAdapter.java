@@ -30,6 +30,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
         notifyDataSetChanged();
     }
 
+    public void addItem(ChatModel item) {
+        list.add(0, item);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ChatAdapter.ChatHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
