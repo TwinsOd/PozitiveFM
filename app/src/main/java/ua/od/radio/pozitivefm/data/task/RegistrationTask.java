@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.io.IOException;
 
+import retrofit2.Response;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.model.RegistrationModel;
 import ua.od.radio.pozitivefm.data.net.RestApi;
@@ -25,12 +26,27 @@ public class RegistrationTask implements Runnable {
     @Override
     public void run() {
         boolean isSuccessful = false;
-
         try {
-            Integer response = restApi.registration(registrationModel).execute().body();
-            Log.i("RegistrationTask", "response = " + response);
-            if (response != null && response == 1)
+            Response response = restApi.registration(
+                    registrationModel.getUsername(),
+                    registrationModel.getDob(),
+                    registrationModel.getFloor(),
+                    registrationModel.getEmail(),
+                    registrationModel.getFamily_status(),
+                    registrationModel.getPassword()
+            ).execute();
+
+            Integer responseAuth = null;
+            if (response.body() instanceof Integer) {
+                responseAuth = (Integer) response.body();
+            }
+            Log.i("RegistrationTask", "response.body = " + response.body());
+            Log.i("RegistrationTask", "response.code = " + response.code());
+            if (responseAuth != null && responseAuth == 1 || response.code() == 200)
                 isSuccessful = true;
+            else {
+                Log.i("RegistrationTask", "response.errorBody() == " + response.errorBody());
+            }
         } catch (IOException e) {
             e.printStackTrace();
             isSuccessful = false;

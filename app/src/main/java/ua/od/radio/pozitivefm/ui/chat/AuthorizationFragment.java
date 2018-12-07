@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -22,10 +24,11 @@ import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.callback.ResponseCallback;
+import ua.od.radio.pozitivefm.data.model.RegistrationModel;
 import ua.od.radio.pozitivefm.data.shared_preferences.SharedPreferencesManager;
 
 
-public class AuthorizationFragment extends DialogFragment implements View.OnClickListener {
+public class AuthorizationFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private boolean isAuth = true;
     private TextView authorizationType;
     private TextView registrationType;
@@ -34,9 +37,10 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
     private EditText loginView;
     private EditText passwordView;
     private ResponseCallback callback;
+    private String gender, state;
     private EditText emailView;
-    private Spinner genderSpinner;
-    private Spinner stateSpinner;
+    private TextView dateView;
+    private boolean isChangeDate = false;
 
     public AuthorizationFragment() {
         // Required empty public constructor
@@ -80,10 +84,13 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
         loginView = view.findViewById(R.id.login_view);
         passwordView = view.findViewById(R.id.password_view);
         emailView = view.findViewById(R.id.email_view);
-        TextView dateView = view.findViewById(R.id.date_view);
+        dateView = view.findViewById(R.id.date_view);
         dateView.setOnClickListener(this);
-        genderSpinner = view.findViewById(R.id.gender_spinner);
-        stateSpinner = view.findViewById(R.id.state_spinner);
+        Spinner genderSpinner = view.findViewById(R.id.gender_spinner);
+        genderSpinner.setOnItemSelectedListener(this);
+        Spinner stateSpinner = view.findViewById(R.id.state_spinner);
+        stateSpinner.setOnItemSelectedListener(this);
+
         return view;
     }
 
@@ -116,7 +123,7 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
                 if (isAuth) {
                     toAuthorization(view.getContext());
                 } else {
-                    Toast.makeText(view.getContext(), "В разработке", Toast.LENGTH_LONG).show();
+                    toRegistration(view.getContext());
                 }
                 break;
             case R.id.date_view:
@@ -135,7 +142,14 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
         calendarToday.add(Calendar.DAY_OF_MONTH, 1);
         int day = calendarToday.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context, null,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                dateView.setText(parseDate(year, month, dayOfMonth));
+                dateView.setTextColor(getResources().getColor(R.color.black));
+                isChangeDate = true;
+            }
+        },
                 year, month, day);
 //        datePickerDialog.getDatePicker().setMinDate(calendarToday.getTimeInMillis());
 //        datePickerDialog.getDatePicker().setMaxDate(calendarMax.getTimeInMillis());
@@ -143,39 +157,94 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
     }
 
     private void toAuthorization(final Context context) {
-        if (checkAuthValue()) {
-            final ProgressDialog progressDialog = new ProgressDialog(context);
-            progressDialog.show();
-            App.getRepository().authorization(
-                    loginView.getText().toString(),
-                    passwordView.getText().toString(),
-                    new DataCallback() {
-                        @Override
-                        public void onEmit(Object data) {
-
-                        }
-
-                        @Override
-                        public void onCompleted() {
-                            progressDialog.cancel();
-                            Toast.makeText(context, "Авторизация прошла успешно", Toast.LENGTH_LONG).show();
-                            SharedPreferencesManager preferencesManager = new SharedPreferencesManager(context);
-                            preferencesManager.saveLogin(loginView.getText().toString());
-                            preferencesManager.savePassword(passwordView.getText().toString());
-                            callback.isSuccessful();
-                            dismiss();
-                        }
-
-                        @Override
-                        public void onError(Throwable throwable) {
-                            progressDialog.cancel();
-                            Toast.makeText(context, "Неверные даные.", Toast.LENGTH_LONG).show();
-                            callback.isFailed();
-                            dismiss();
-                        }
-                    });
-        } else
+        if (!checkAuthValue()) {
             Toast.makeText(context, "Заполните даные.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.show();
+        App.getRepository().authorization(
+                loginView.getText().toString(),
+                passwordView.getText().toString(),
+                new DataCallback() {
+                    @Override
+                    public void onEmit(Object data) {
+
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        progressDialog.cancel();
+                        Toast.makeText(context, "Авторизация прошла успешно", Toast.LENGTH_LONG).show();
+                        SharedPreferencesManager preferencesManager = new SharedPreferencesManager(context);
+                        preferencesManager.saveLogin(loginView.getText().toString());
+                        preferencesManager.savePassword(passwordView.getText().toString());
+                        callback.isSuccessful();
+                        dismiss();
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        progressDialog.cancel();
+                        Toast.makeText(context, "Неверные даные.", Toast.LENGTH_LONG).show();
+                        callback.isFailed();
+                        dismiss();
+                    }
+                });
+
+    }
+
+
+    private void toRegistration(final Context context) {
+        if (!checkRegistration()) {
+            Toast.makeText(context, "Заполните даные.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        if (getActivity() != null)
+            progressDialog.show();
+        RegistrationModel model = new RegistrationModel();
+        model.setUsername(loginView.getText().toString());
+        model.setPassword(passwordView.getText().toString());
+        model.setEmail(emailView.getText().toString());
+        model.setFamily_status(state);
+        model.setFloor(gender);
+        model.setDob(emailView.getText().toString());
+        App.getRepository().registration(
+                model,
+                new DataCallback() {
+                    @Override
+                    public void onEmit(Object data) {
+
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        progressDialog.cancel();
+                        Toast.makeText(context, "Авторизация прошла успешно", Toast.LENGTH_LONG).show();
+                        SharedPreferencesManager preferencesManager = new SharedPreferencesManager(context);
+                        preferencesManager.saveLogin(loginView.getText().toString());
+                        preferencesManager.savePassword(passwordView.getText().toString());
+                        callback.isSuccessful();
+                        dismiss();
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        progressDialog.cancel();
+                        Toast.makeText(context, "Неверные даные.", Toast.LENGTH_LONG).show();
+                        callback.isFailed();
+                        dismiss();
+                    }
+                });
+
+    }
+
+    private String parseDate(int year, int month, int day) {
+        month++;
+        String monthStr = month > 9 ? String.valueOf(month) : String.format("0%s", month);
+        String dayStr = day > 9 ? String.valueOf(day) : String.format("0%s", day);
+        return String.format("%s-%s-%s", year, monthStr, dayStr);
     }
 
     private boolean checkAuthValue() {
@@ -184,7 +253,45 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
         return login.length() > 2 && password.length() > 3;
     }
 
+    private boolean checkRegistration() {
+        return
+                checkAuthValue()
+                        && gender != null
+                        && state != null
+                        && checkEmail()
+                        && isChangeDate;
+
+    }
+
+    private boolean checkEmail() {
+        String email = emailView.getText().toString();
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     public void setCallback(ResponseCallback callback) {
         this.callback = callback;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String value;
+        if (position == 0) {
+            value = null;
+        } else
+            value = parent.getItemAtPosition(position).toString();
+
+        switch (parent.getId()) {
+            case R.id.gender_spinner:
+                gender = value;
+                break;
+            case R.id.state_spinner:
+                state = value;
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

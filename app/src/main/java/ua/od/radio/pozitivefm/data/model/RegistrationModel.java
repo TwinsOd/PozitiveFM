@@ -7,6 +7,9 @@ public class RegistrationModel {
     private String email;
     private String family_status;//Не женат
     private String password;
+    private String name;
+    private String phone;
+    private String city;
 
     public String getUsername() {
         return username;
@@ -54,5 +57,29 @@ public class RegistrationModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
