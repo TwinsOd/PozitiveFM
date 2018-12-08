@@ -45,12 +45,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
     @Override
     public void onBindViewHolder(@NonNull ChatAdapter.ChatHolder chatHolder, int i) {
         ChatModel model = list.get(i);
-        chatHolder.nickView.setText(model.getNick());
+        if (model.getNick() != null)
+            chatHolder.nickView.setText(model.getNick());
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 //            chatHolder.messageView.setText(Html.fromHtml(model.getMessage(), Html.FROM_HTML_MODE_COMPACT));
 //        } else {
-        URLImageParser urlImageParser = new URLImageParser(chatHolder.messageView, context);
-        chatHolder.messageView.setText(Html.fromHtml(model.getMessage(), urlImageParser, null));
+        if (model.getMessage() != null) {
+            URLImageParser urlImageParser = new URLImageParser(chatHolder.messageView, context);
+            chatHolder.messageView.setText(Html.fromHtml(model.getMessage(), urlImageParser, null));
+        }
 //        }
 //        chatHolder.messageView.setText(model.getMessage());
     }

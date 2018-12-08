@@ -13,4 +13,5 @@ class SharedPrefConst {
     static final String PASSWORD = "password";
     static final String EMAIL = "email";
     static final String FLOOR = "floor";//Мужской
+    static final String COOKIE_BODY = "cookie_body";
 }

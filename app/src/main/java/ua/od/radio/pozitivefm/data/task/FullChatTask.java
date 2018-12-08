@@ -32,7 +32,8 @@ public class FullChatTask implements Runnable {
         try {
 //            Connection connection = Jsoup.connect(BASE_POSITIV_URL);
 //            if (true){
-//                connection.cookie("joomla_user_state", "logged_in");
+//                connection.cookie("joomla_user_state", "logged_in");//optional
+//                connection.cookie("e58483f46a435e3dafb1b3b4e75abdc6", "07mj8ft1sn8702rll95qbnbpc4");
 //            }
 //            body = connection.post().body();
             body = Jsoup.connect(BASE_POSITIV_URL).post().body();

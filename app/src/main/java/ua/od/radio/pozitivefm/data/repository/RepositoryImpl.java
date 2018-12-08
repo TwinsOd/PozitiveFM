@@ -65,7 +65,7 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void authorization(String login, String password, DataCallback callback) {
-        executorService.execute(new AuthorizationTask(restApi, uiHandler, callback, login, password));
+        executorService.execute(new AuthorizationTask(restApi, uiHandler, context, callback, login, password));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class RepositoryImpl implements Repository {
     @Override
     public void sendMessage(String message, ResponseCallback callback) {
         SharedPreferencesManager preferencesManager = new SharedPreferencesManager(context);
-        executorService.execute(new SendMessageTask(restApi, uiHandler, callback, preferencesManager.getLogin(), message));
+        executorService.execute(new SendMessageTask(restApi, uiHandler, context, callback, preferencesManager.getLogin(), message));
     }
 
     @Override

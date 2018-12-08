@@ -6,9 +6,11 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import ua.od.radio.pozitivefm.data.model.MessageResponse;
 import ua.od.radio.pozitivefm.data.model.SettingsModel;
 
 /**
@@ -19,7 +21,7 @@ public interface RestApi {
 
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @GET("index.php?option=com_smartshoutbox&task=getshouts")
-    Call<SettingsModel> update();
+    Call<SettingsModel> update(@Header("Cookie") String cookieBody);
 
     @GET("radio_scripts/site/online.php")
     Call<List<JsonElement>> getTracks();
@@ -44,11 +46,12 @@ public interface RestApi {
             @Query("password") String password);
 
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
-    @GET("index.php?option=com_smartshoutbox&task=addshout")
-    Call<Integer> sendMessage(
-//            @Query("shoutcategory") String shoutcategory,//0
+    @POST("index.php?option=com_smartshoutbox&task=addshout")
+    Call<MessageResponse> sendMessage(
+            @Header("Cookie") String cookieBody,
             @Query("name") String name,
             @Query("message") String message
+//            @Query("shoutcategory") String shoutcategory,//0
 //            @Query("files") String files,
 //            @Query("sid") String sid//0
     );

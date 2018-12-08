@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import static ua.od.radio.pozitivefm.data.shared_preferences.SharedPrefConst.APP_PREFERENCES;
+import static ua.od.radio.pozitivefm.data.shared_preferences.SharedPrefConst.COOKIE_BODY;
 import static ua.od.radio.pozitivefm.data.shared_preferences.SharedPrefConst.DATE_BIRTHDAY;
 import static ua.od.radio.pozitivefm.data.shared_preferences.SharedPrefConst.EMAIL;
 import static ua.od.radio.pozitivefm.data.shared_preferences.SharedPrefConst.FAMILY_STATUS;
@@ -90,5 +91,15 @@ public class SharedPreferencesManager {
 
     public String getFloor() {
         return sharedPreferences.getString(FLOOR, "");
+    }
+
+    public void saveCookieBody(String cookieBody) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(COOKIE_BODY, cookieBody);
+        editor.apply();
+    }
+
+    public String getCookieBody() {
+        return sharedPreferences.getString(COOKIE_BODY, "");
     }
 }
