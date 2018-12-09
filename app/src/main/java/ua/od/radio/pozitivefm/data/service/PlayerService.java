@@ -149,7 +149,7 @@ public class PlayerService extends Service {
                         TrackModel model = data.get(0);
                         updateMetadata(model);
                         refreshNotificationAndForegroundStatus(PlaybackStateCompat.STATE_PLAYING);
-                        Log.i("PlayerService", "getTrackList.author" + data.get(0).getAuthor());
+//                        Log.i("PlayerService", "getTrackList.author" + data.get(0).getAuthor());
                         Intent broadCastIntent = new Intent();
                         broadCastIntent.setAction(TRACK_INTENT);
                         broadCastIntent.putExtra(Constants.AUTHOR, model.getAuthor());

@@ -23,6 +23,7 @@ import ua.od.radio.pozitivefm.data.executor.JobExecutor;
 import ua.od.radio.pozitivefm.data.model.ChatModel;
 import ua.od.radio.pozitivefm.data.model.RegistrationModel;
 import ua.od.radio.pozitivefm.data.model.SettingsAppModel;
+import ua.od.radio.pozitivefm.data.model.SettingsModel;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 import ua.od.radio.pozitivefm.data.net.RestApi;
 import ua.od.radio.pozitivefm.data.net.RestModule;
@@ -33,6 +34,7 @@ import ua.od.radio.pozitivefm.data.task.FullChatTask;
 import ua.od.radio.pozitivefm.data.task.RegistrationTask;
 import ua.od.radio.pozitivefm.data.task.SendMessageTask;
 import ua.od.radio.pozitivefm.data.task.TrackTask;
+import ua.od.radio.pozitivefm.data.task.UpdateTask;
 
 public class RepositoryImpl implements Repository {
     private final Handler uiHandler;
@@ -68,6 +70,11 @@ public class RepositoryImpl implements Repository {
     @Override
     public void authorization(String login, String password, DataCallback callback) {
         executorService.execute(new AuthorizationTask(restApi, uiHandler, context, callback, login, password));
+    }
+
+    @Override
+    public void getUpdateData(DataCallback<List<SettingsModel>> callback) {
+        executorService.execute(new UpdateTask(restApi, uiHandler, callback, context));
     }
 
     @Override
