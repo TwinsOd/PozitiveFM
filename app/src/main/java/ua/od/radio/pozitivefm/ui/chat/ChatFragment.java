@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,7 +31,7 @@ import ua.od.radio.pozitivefm.data.shared_preferences.SharedPreferencesManager;
 
 
 public class ChatFragment extends Fragment implements View.OnClickListener {
-
+    private final int UPDATE_TIME = 10 * 1000;
     private ChatAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayout enterLayout;
@@ -41,6 +42,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     private TextView logOutView;
     private ProgressDialog progressDialog;
     private SharedPreferencesManager preferencesManager;
+    private Handler timerHandler;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -213,5 +215,32 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             }
         });
         fragment.show(getChildFragmentManager(), "authorization_fragment");
+    }
+
+    private void createTimer() {
+        Log.i("ChatFragment", "createTimer");
+        timerHandler = new Handler();
+        timerHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (timerHandler == null)
+                    return;
+                Log.i("ChatFragment", "run Timer");
+                timerHandler.postDelayed(this, UPDATE_TIME);
+                loadData();
+            }
+        }, UPDATE_TIME);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timerHandler = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        createTimer();
     }
 }

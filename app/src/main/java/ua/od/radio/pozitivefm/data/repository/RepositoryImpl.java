@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -12,6 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.View;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -102,6 +105,14 @@ public class RepositoryImpl implements Repository {
                     playerView.changeMode(FloatingMusicActionButton.Mode.STOP_TO_PLAY);
                 else
                     playerView.changeMode(FloatingMusicActionButton.Mode.PLAY_TO_STOP);
+
+                FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+
+                Bundle bundle = new Bundle();
+//                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+                bundle.putBoolean(FirebaseAnalytics.Param.ITEM_NAME, playing);
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "radio_player");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
             }
         };
         serviceConnection = new ServiceConnection() {
