@@ -22,6 +22,7 @@ import ua.od.radio.pozitivefm.data.callback.ResponseCallback;
 import ua.od.radio.pozitivefm.data.executor.JobExecutor;
 import ua.od.radio.pozitivefm.data.model.ChatModel;
 import ua.od.radio.pozitivefm.data.model.RegistrationModel;
+import ua.od.radio.pozitivefm.data.model.SettingsAppModel;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 import ua.od.radio.pozitivefm.data.net.RestApi;
 import ua.od.radio.pozitivefm.data.net.RestModule;
@@ -44,6 +45,7 @@ public class RepositoryImpl implements Repository {
     private MediaControllerCompat.Callback callback = null;
     private ServiceConnection serviceConnection = null;
     private PlayerService.PlayerServiceBinder playerServiceBinder = null;
+    private SettingsAppModel settingsAppModel;
 
     public RepositoryImpl(@NonNull Context context) {
         this.context = context;
@@ -55,7 +57,7 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void getTrackList(DataCallback<List<TrackModel>> callback) {
-        executorService.execute(new TrackTask(restApi, uiHandler, callback ));
+        executorService.execute(new TrackTask(restApi, uiHandler, callback));
     }
 
     @Override
@@ -143,5 +145,18 @@ public class RepositoryImpl implements Repository {
         }
         if (serviceConnection != null)
             context.unbindService(serviceConnection);
+    }
+
+    @Override
+    public void setSettingsApp(SettingsAppModel model) {
+        settingsAppModel = model;
+    }
+
+    @Override
+    public SettingsAppModel getSettingsApp() {
+        if (settingsAppModel == null)
+            settingsAppModel = new SettingsAppModel(1, 1);
+
+        return settingsAppModel;
     }
 }

@@ -7,6 +7,7 @@ import ua.od.radio.pozitivefm.data.callback.DataCallback;
 import ua.od.radio.pozitivefm.data.callback.ResponseCallback;
 import ua.od.radio.pozitivefm.data.model.ChatModel;
 import ua.od.radio.pozitivefm.data.model.RegistrationModel;
+import ua.od.radio.pozitivefm.data.model.SettingsAppModel;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 
 public interface Repository {
@@ -19,4 +20,8 @@ public interface Repository {
 
     void initPlayer(FloatingMusicActionButton playerView);
     void disablePlayer();
+
+    void setSettingsApp(SettingsAppModel model);
+
+    SettingsAppModel getSettingsApp();
 }
