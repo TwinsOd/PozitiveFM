@@ -233,8 +233,8 @@ public class AuthorizationFragment extends DialogFragment implements View.OnClic
                     public void onError(Throwable throwable) {
                         progressDialog.cancel();
                         Toast.makeText(context, "Неверные даные.", Toast.LENGTH_LONG).show();
-                        callback.isFailed();
-                        dismiss();
+//                        callback.isFailed();
+//                        dismiss();
                     }
                 });
 

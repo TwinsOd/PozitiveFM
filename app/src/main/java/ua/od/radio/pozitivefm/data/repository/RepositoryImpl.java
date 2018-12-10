@@ -82,7 +82,7 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void registration(RegistrationModel registrationModel, DataCallback callback) {
-        executorService.execute(new RegistrationTask(restApi, uiHandler, callback, registrationModel));
+        executorService.execute(new RegistrationTask(restApi, uiHandler, context, callback, registrationModel));
     }
 
     @Override

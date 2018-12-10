@@ -24,8 +24,7 @@ public class SendMessageTask implements Runnable {
         this.restApi = restApi;
         this.uiHandler = uiHandler;
         this.context = context;
-        this.name = "TwinsOD";
-//        this.name = name;
+        this.name = name;
         this.message = message;
         this.callback = callback;
     }
@@ -44,7 +43,8 @@ public class SendMessageTask implements Runnable {
                 messageResponse = (MessageResponse) response.body();
             }
             Log.i("SendMessageTask", "response.code = " + response.code());
-            if (response.code() == 200 && messageResponse != null && messageResponse.getShouts().size() != 0) {
+            if (response.code() == 200 && messageResponse != null &&
+                    messageResponse.getShouts() != null && messageResponse.getShouts().size() != 0) {
                 Log.i("SendMessageTask", "me.getShouts().size() = " + messageResponse.getShouts().size());
                 if (messageResponse.getShouts() != null)
                     for (String str : messageResponse.getShouts()) {

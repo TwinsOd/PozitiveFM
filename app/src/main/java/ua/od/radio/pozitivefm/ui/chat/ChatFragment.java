@@ -174,6 +174,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     private void logOut() {
         isAuth = false;
         preferencesManager.setAuthorization(false);
+        preferencesManager.saveCookieBody("");
         updateBottomView();
     }
 
