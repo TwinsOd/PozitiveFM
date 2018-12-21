@@ -42,21 +42,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Bundle bundle = new Bundle();
-//                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+
                 bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "menu");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "button");
 
                 switch (item.getItemId()) {
                     case R.id.navigation_radio:
                         fragment = new RadioFragment();
-                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "radio");
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "radio");
                         break;
                     case R.id.navigation_video:
                         fragment = new VideoFragment();
-                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "video");
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "video");
                         break;
                     case R.id.navigation_about_as:
                         fragment = new AboutUsFragment();
-                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "about_as");
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "about_as");
                         break;
                 }
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);

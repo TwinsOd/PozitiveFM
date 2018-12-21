@@ -52,13 +52,13 @@ public class AboutUsFragment extends Fragment implements View.OnClickListener {
                 openLink("https://www.youtube.com/watch?v=KRIUFyo9nYg");
                 break;
             case R.id.facebook_icon:
-                openLink("https://www.facebook.com/pozitiv.fm.brand.voice");
+                openLink("https://www.facebook.com/pozitiv.fm.odessa/");
                 break;
             case R.id.good_game_icon:
                 openLink("https://goodgame.ru/channel/PozitivFM");
                 break;
             case R.id.instagram_icon:
-                openLink("https://www.instagram.com/pozitiv.fm_brand_voice/");
+                openLink("https://www.instagram.com/pozitiv.fm/");
                 break;
             case R.id.twitch_icon:
                 openLink("https://www.twitch.tv/pozitivfm");
