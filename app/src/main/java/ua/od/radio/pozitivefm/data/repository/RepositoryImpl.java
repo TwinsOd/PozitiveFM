@@ -93,6 +93,7 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void initPlayer(final FloatingMusicActionButton playerView) {
+        final FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         callback = new MediaControllerCompat.Callback() {
             @Override
             public void onPlaybackStateChanged(PlaybackStateCompat state) {
@@ -106,12 +107,10 @@ public class RepositoryImpl implements Repository {
                 else
                     playerView.changeMode(FloatingMusicActionButton.Mode.PLAY_TO_STOP);
 
-                FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
-
                 Bundle bundle = new Bundle();
-//                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
-                bundle.putBoolean(FirebaseAnalytics.Param.ITEM_NAME, playing);
                 bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "radio_player");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, playing ? "play" : "stop");
+//                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
             }
         };
