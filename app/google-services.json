@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "258738176591",
+    "firebase_url": "https://pozitivfm-984ba.firebaseio.com",
+    "project_id": "pozitivfm-984ba",
+    "storage_bucket": "pozitivfm-984ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258738176591:android:a9d18adfc7ae3a2f",
+        "android_client_info": {
+          "package_name": "ua.od.radio.pozitivfm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258738176591-80rr3egiu662r2lh33p05310j1ohavrk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ua.od.radio.pozitivfm",
+            "certificate_hash": "0e5a533bae1aeeeafff9544925239e65e5d0529b"
+          }
+        },
+        {
+          "client_id": "258738176591-rvvc434qcc5lf0r3179mprgjpje3v1nd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGdZ6QaS4sAX707zxcUj7CvZJO_cwGhgI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258738176591-rvvc434qcc5lf0r3179mprgjpje3v1nd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
