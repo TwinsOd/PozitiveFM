@@ -109,7 +109,9 @@ public class RepositoryImpl implements Repository {
 
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "radio_player");
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, playing ? "play" : "stop");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "button_audio");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, playing ? "play" : "stop");
+
 //                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
             }

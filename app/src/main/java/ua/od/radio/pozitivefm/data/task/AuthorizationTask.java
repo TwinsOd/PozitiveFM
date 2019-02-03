@@ -56,7 +56,7 @@ public class AuthorizationTask implements Runnable {
         uiHandler.post(new CallbackToUI(isSuccessful));
     }
 
-    private String headerToCookie(Headers headers) {
+    public static String headerToCookie(Headers headers) {
         List<String> array = new ArrayList<>();
         for (int i = 0; i < headers.size(); i++) {
             if (headers.name(i).equals("Set-Cookie")) {

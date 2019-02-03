@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
 
                 bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "menu");
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "button");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "button_menu");
 
                 switch (item.getItemId()) {
                     case R.id.navigation_radio:

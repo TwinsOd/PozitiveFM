@@ -20,6 +20,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
 
     TrackAdapter() {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2"));
+        setHasStableIds(true);
     }
 
     public void setList(List<TrackModel> list) {
