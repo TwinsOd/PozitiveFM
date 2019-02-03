@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import ua.od.radio.pozitivefm.App;
 import ua.od.radio.pozitivefm.R;
 import ua.od.radio.pozitivefm.ui.about_us.AboutUsFragment;
 import ua.od.radio.pozitivefm.ui.chat.ChatFragment;
@@ -23,36 +26,47 @@ public class MainActivity extends AppCompatActivity {
     private boolean isShowChat = false;
     private BottomNavigationView navigation;
     private RelativeLayout topView;
-//    private BroadcastReceiver receiver;
+    //    private BroadcastReceiver receiver;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         fragmentManager = getFragmentManager();
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Bundle bundle = new Bundle();
+
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "menu");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "button_menu");
+
                 switch (item.getItemId()) {
                     case R.id.navigation_radio:
                         fragment = new RadioFragment();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "radio");
                         break;
                     case R.id.navigation_video:
                         fragment = new VideoFragment();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "video");
                         break;
                     case R.id.navigation_about_as:
                         fragment = new AboutUsFragment();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "about_as");
                         break;
                 }
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.main_container, fragment).commit();
                 return true;
             }
         });
-        navigation.setSelectedItemId(R.id.navigation_radio);
-//        navigation.setSelectedItemId(R.id.navigation_video);
+
         findViewById(R.id.chat_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,29 +81,17 @@ public class MainActivity extends AppCompatActivity {
         });
         topView = findViewById(R.id.top_bar);
 
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction(TRACK_INTENT);
-//        receiver = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//                TrackModel model = new TrackModel();
-//                model.setAuthor(intent.getStringExtra(Constants.AUTHOR));
-//                model.setTitle(intent.getStringExtra(Constants.TITLE));
-//                model.setDj(intent.getStringExtra(Constants.DJ));
-//                model.setTs(Long.parseLong(intent.getStringExtra(Constants.TS)));
-//            }
-//        };
-//        registerReceiver(receiver, filter);
+        switch (App.getRepository().getSettingsApp().getMenu()) {
+            case 1:
+                navigation.setSelectedItemId(R.id.navigation_radio);
+                break;
+            case 2:
+                navigation.setSelectedItemId(R.id.navigation_video);
+                break;
+            default:
+                navigation.setSelectedItemId(R.id.navigation_radio);
+        }
     }
-
-//    @Override
-//    protected void onDestroy() {
-//        if (receiver != null) {
-//            unregisterReceiver(receiver);
-//            receiver = null;
-//        }
-//        super.onDestroy();
-//    }
 
     @Override
     public void onBackPressed() {

@@ -149,7 +149,7 @@ public class PlayerService extends Service {
                         TrackModel model = data.get(0);
                         updateMetadata(model);
                         refreshNotificationAndForegroundStatus(PlaybackStateCompat.STATE_PLAYING);
-                        Log.i("PlayerService", "getTrackList.author" + data.get(0).getAuthor());
+//                        Log.i("PlayerService", "getTrackList.author" + data.get(0).getAuthor());
                         Intent broadCastIntent = new Intent();
                         broadCastIntent.setAction(TRACK_INTENT);
                         broadCastIntent.putExtra(Constants.AUTHOR, model.getAuthor());
@@ -400,8 +400,9 @@ public class PlayerService extends Service {
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark)); // The whole background (in MediaStyle), not just icon background
         builder.setShowWhen(false);
-        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setPriority(NotificationCompat.PRIORITY_LOW);
         builder.setOnlyAlertOnce(true);
+        builder.setSound(null, 0);
         builder.setChannelId(NOTIFICATION_DEFAULT_CHANNEL_ID);
 
         return builder.build();

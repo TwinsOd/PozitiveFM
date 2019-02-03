@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -12,6 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.View;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -22,6 +25,8 @@ import ua.od.radio.pozitivefm.data.callback.ResponseCallback;
 import ua.od.radio.pozitivefm.data.executor.JobExecutor;
 import ua.od.radio.pozitivefm.data.model.ChatModel;
 import ua.od.radio.pozitivefm.data.model.RegistrationModel;
+import ua.od.radio.pozitivefm.data.model.SettingsAppModel;
+import ua.od.radio.pozitivefm.data.model.SettingsModel;
 import ua.od.radio.pozitivefm.data.model.TrackModel;
 import ua.od.radio.pozitivefm.data.net.RestApi;
 import ua.od.radio.pozitivefm.data.net.RestModule;
@@ -32,6 +37,7 @@ import ua.od.radio.pozitivefm.data.task.FullChatTask;
 import ua.od.radio.pozitivefm.data.task.RegistrationTask;
 import ua.od.radio.pozitivefm.data.task.SendMessageTask;
 import ua.od.radio.pozitivefm.data.task.TrackTask;
+import ua.od.radio.pozitivefm.data.task.UpdateTask;
 
 public class RepositoryImpl implements Repository {
     private final Handler uiHandler;
@@ -44,6 +50,7 @@ public class RepositoryImpl implements Repository {
     private MediaControllerCompat.Callback callback = null;
     private ServiceConnection serviceConnection = null;
     private PlayerService.PlayerServiceBinder playerServiceBinder = null;
+    private SettingsAppModel settingsAppModel;
 
     public RepositoryImpl(@NonNull Context context) {
         this.context = context;
@@ -55,7 +62,7 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void getTrackList(DataCallback<List<TrackModel>> callback) {
-        executorService.execute(new TrackTask(restApi, uiHandler, callback ));
+        executorService.execute(new TrackTask(restApi, uiHandler, callback));
     }
 
     @Override
@@ -69,8 +76,13 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
+    public void getUpdateData(DataCallback<List<SettingsModel>> callback) {
+        executorService.execute(new UpdateTask(restApi, uiHandler, callback, context));
+    }
+
+    @Override
     public void registration(RegistrationModel registrationModel, DataCallback callback) {
-        executorService.execute(new RegistrationTask(restApi, uiHandler, callback, registrationModel));
+        executorService.execute(new RegistrationTask(restApi, uiHandler, context, callback, registrationModel));
     }
 
     @Override
@@ -81,6 +93,7 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void initPlayer(final FloatingMusicActionButton playerView) {
+        final FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         callback = new MediaControllerCompat.Callback() {
             @Override
             public void onPlaybackStateChanged(PlaybackStateCompat state) {
@@ -93,6 +106,14 @@ public class RepositoryImpl implements Repository {
                     playerView.changeMode(FloatingMusicActionButton.Mode.STOP_TO_PLAY);
                 else
                     playerView.changeMode(FloatingMusicActionButton.Mode.PLAY_TO_STOP);
+
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "radio_player");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "button_audio");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, playing ? "play" : "stop");
+
+//                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
             }
         };
         serviceConnection = new ServiceConnection() {
@@ -143,5 +164,18 @@ public class RepositoryImpl implements Repository {
         }
         if (serviceConnection != null)
             context.unbindService(serviceConnection);
+    }
+
+    @Override
+    public void setSettingsApp(SettingsAppModel model) {
+        settingsAppModel = model;
+    }
+
+    @Override
+    public SettingsAppModel getSettingsApp() {
+        if (settingsAppModel == null)
+            settingsAppModel = new SettingsAppModel(1, 1);
+
+        return settingsAppModel;
     }
 }

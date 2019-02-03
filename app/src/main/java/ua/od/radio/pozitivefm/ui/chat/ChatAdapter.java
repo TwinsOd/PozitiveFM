@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +27,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
     }
 
     public void setList(List<ChatModel> list) {
+        if (this.list != null && this.list.size() > 0
+                && !TextUtils.isEmpty(this.list.get(0).getMessage())
+                && !TextUtils.isEmpty(list.get(0).getMessage())
+                && this.list.get(0).getMessage().equals(list.get(0).getMessage())
+                || list == null || list.size() == 0) {
+            return;
+        }
         this.list = list;
         notifyDataSetChanged();
     }
 
-    public void addItem(ChatModel item) {
+    void addItem(ChatModel item) {
         list.add(0, item);
         notifyDataSetChanged();
     }

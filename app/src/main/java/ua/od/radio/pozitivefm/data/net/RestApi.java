@@ -20,8 +20,8 @@ import ua.od.radio.pozitivefm.data.model.SettingsModel;
 public interface RestApi {
 
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
-    @GET("index.php?option=com_smartshoutbox&task=getshouts")
-    Call<SettingsModel> update(@Header("Cookie") String cookieBody);
+    @POST("index.php?option=com_smartshoutbox&task=getshouts")
+    Call<List<SettingsModel>> update(@Header("Cookie") String cookieBody);
 
     @GET("radio_scripts/site/online.php")
     Call<List<JsonElement>> getTracks();
