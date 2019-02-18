@@ -76,7 +76,7 @@ public class AboutUsFragment extends Fragment implements View.OnClickListener {
                 callPhone("+38(067)628 07 77");
                 break;
             case R.id.email_view:
-                sendEmail();
+                sendEmail(v);
                 break;
             case R.id.web_view:
                 openLink("http://pozitiv.fm/");
@@ -103,16 +103,16 @@ public class AboutUsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void sendEmail() {
+    private void sendEmail(View v) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"pozitivfm.chief@gmail.com"});
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"melnikovaolga1995@gmail.com"});
 //        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
 //        i.putExtra(Intent.EXTRA_TEXT   , "body of email");
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
     }
 
